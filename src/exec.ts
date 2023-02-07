@@ -1,5 +1,5 @@
-import { error } from "isaacscript-common-ts";
 import { spawnSync, SpawnSyncReturns } from "node:child_process";
+import { error } from "./utils.js";
 
 /** Returns a tuple of exit status and stdout. The stdout is trimmed for convenience. */
 export function execShell(

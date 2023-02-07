@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { error } from "isaacscript-common-ts";
 import sourceMapSupport from "source-map-support";
 import { CSPELL_CONFIG_PATH } from "./constants.js";
 import { execShell } from "./exec.js";
@@ -10,6 +9,7 @@ import {
   getPackageManagerExecCommand,
   getPackageManagerUsedForExistingProject,
 } from "./packageManager.js";
+import { error } from "./utils.js";
 
 main();
 

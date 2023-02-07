@@ -1,5 +1,5 @@
-import { error, isRecord } from "isaacscript-common-ts";
 import * as JSONC from "jsonc-parser";
+import { error, isRecord } from "./utils.js";
 
 /**
  * Helper function to a string as JSON.

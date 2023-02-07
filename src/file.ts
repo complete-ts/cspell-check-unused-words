@@ -1,5 +1,5 @@
-import { error } from "isaacscript-common-ts";
 import * as fs from "node:fs";
+import { error } from "./utils.js";
 
 export function fileExists(filePath: string): boolean {
   let pathExists: boolean;
