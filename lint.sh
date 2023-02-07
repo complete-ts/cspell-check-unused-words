@@ -16,7 +16,12 @@ npx prettier --loglevel warn --check .
 
 # Use ESLint to lint the TypeScript.
 # "--max-warnings 0" makes warnings fail in CI, since we set all ESLint errors to warnings.
-npx eslint --max-warnings 0 .
+# @template-ignore-next-line
+# npx eslint --max-warnings 0 .
+# @template-customization-start
+# (Commented out because we want "isaacscript-lint" to include this project. Thus, we cannot lint
+# this project, since using "isaacscript-lint" would cause a circular dependency.)
+# @template-customization-end
 
 # Check for unused exports.
 # "--error" makes it return an error code of 1 if unused exports are found.
@@ -26,7 +31,7 @@ npx ts-prune --error
 # "--no-progress" and "--no-summary" make it only output errors.
 npx cspell --no-progress --no-summary .
 
-# Check for orphaned words.
+# Check for unused CSpell words.
 # @template-ignore-next-line
 bash "$DIR/run.sh"
 
