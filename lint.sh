@@ -27,6 +27,12 @@ npx ts-prune --error
 npx cspell --no-progress --no-summary .
 
 # Check for orphaned words.
-bash "$DIR/check-orphaned-words.sh"
+# @template-ignore-next-line
+bash "$DIR/run.sh"
+
+# @template-customization-start
+# Check for base file updates.
+npx isaacscript check-ts --ignore "run.sh"
+# @template-customization-end
 
 echo "Successfully linted in $SECONDS seconds."
