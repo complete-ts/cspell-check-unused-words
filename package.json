@@ -32,7 +32,7 @@
   "devDependencies": {
     "@types/node": "^18.13.0",
     "@types/source-map-support": "^0.5.6",
-    "isaacscript": "^3.6.15",
+    "isaacscript": "^3.6.16",
     "isaacscript-lint": "^4.9.1",
     "isaacscript-tsconfig": "^4.0.0",
     "rimraf": "^4.1.2",

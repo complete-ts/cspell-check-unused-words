@@ -2692,10 +2692,10 @@ isaacscript-tsconfig@^4.0.0:
   dependencies:
     "@tsconfig/strictest" "^1.0.2"
 
-isaacscript@^3.6.15:
-  version "3.6.15"
-  resolved "https://registry.yarnpkg.com/isaacscript/-/isaacscript-3.6.15.tgz#a498ec94f1e642f91cfd2eed509304ec1f2a06e8"
-  integrity sha512-2IV3ELLjp+sWluRxlEg59CXHy+ur31kF1sDngjjW7jJmRGqaQRbNhjIJyAhC6MMdc2VfQ4SwP72AiqSa9Zs42A==
+isaacscript@^3.6.16:
+  version "3.6.16"
+  resolved "https://registry.yarnpkg.com/isaacscript/-/isaacscript-3.6.16.tgz#5b4f62daae94ea957a16dd4a60e6901ac2f67bd2"
+  integrity sha512-Oc4KMnIChfLBR1staGGmKFI21RKPVdWGdzIs6smlmUsXh/cIPNmVdOPxpin4cGCVZ33+HdMWfAZ6rI73LhubPw==
   dependencies:
     ajv "^8.12.0"
     chalk "4.1.2"
