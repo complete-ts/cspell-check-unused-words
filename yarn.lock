@@ -1263,10 +1263,10 @@ crypto-random-string@^4.0.0:
   dependencies:
     type-fest "^1.0.1"
 
-cspell-check-unused-words@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/cspell-check-unused-words/-/cspell-check-unused-words-1.0.2.tgz#a03fdb09435e5f720edf7d2b7bbb489e1de2cd0f"
-  integrity sha512-pG+RyJls2QHpW+pPSGzg6oePL2CQxJ7s0l23DCv5GFpN8ne3U5h/ZpkeQz0Yka0Gm/gOR2V1VoZiCr24iyL2gA==
+cspell-check-unused-words@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/cspell-check-unused-words/-/cspell-check-unused-words-1.0.3.tgz#1fe4e91f914b1638c2abae0e4fe44e403eb7ece9"
+  integrity sha512-BEWa4Vxc+6TiJkSXgDtXerpCo3QUMsulTq8VWkjSkYVoBPhnQ9Xt492DItu2CejIPLglGEtvZUHcZfr/nf2VoQ==
   dependencies:
     jsonc-parser "^3.2.0"
     source-map-support "^0.5.21"
@@ -2664,17 +2664,17 @@ isaacscript-common-ts@^10.0.0:
   resolved "https://registry.yarnpkg.com/isaacscript-common-ts/-/isaacscript-common-ts-10.0.0.tgz#f1037ad8856ef37860964b2987b913aa2e289280"
   integrity sha512-lacHMi0+2ovSuMrtz253XjvDX1i4bER5eNbWsRBTOQp56ZTX5aGC9zKg6GyaDULTfwL/K/bD1mVG69qvsAqChQ==
 
-isaacscript-lint@^4.10.2:
-  version "4.10.2"
-  resolved "https://registry.yarnpkg.com/isaacscript-lint/-/isaacscript-lint-4.10.2.tgz#246719fa086844d0133b63207f89f45202b28d68"
-  integrity sha512-IdlLKdgKWzqoMY7abJz/FqLigt1+dPE4sP6Q+8xhucEkr+o3S82oQ0fn3MfwDMbO2E5Ngbd+KsdivtfOrqkdDQ==
+isaacscript-lint@^4.10.3:
+  version "4.10.3"
+  resolved "https://registry.yarnpkg.com/isaacscript-lint/-/isaacscript-lint-4.10.3.tgz#8c41aed412a61e943821de58e15b632164ca9261"
+  integrity sha512-+aCkQhq+6g84bjiko+h+EQ7GKDl0DhoLb1gaJq8ye9mChyEXydhk+y7xuq7RMQrlpZEF9lUMl7e0L6PzaPa77A==
   dependencies:
     "@prettier/plugin-xml" "^2.2.0"
     "@tsconfig/recommended" "^1.0.2"
     "@typescript-eslint/eslint-plugin" "^5.51.0"
     "@typescript-eslint/parser" "^5.51.0"
     cspell "^6.22.0"
-    cspell-check-unused-words "^1.0.2"
+    cspell-check-unused-words "^1.0.3"
     eslint "^8.33.0"
     eslint-config-airbnb-base "^15.0.0"
     eslint-config-airbnb-typescript "^17.0.0"
