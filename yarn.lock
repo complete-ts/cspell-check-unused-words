@@ -1263,12 +1263,11 @@ crypto-random-string@^4.0.0:
   dependencies:
     type-fest "^1.0.1"
 
-cspell-check-unused-words@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/cspell-check-unused-words/-/cspell-check-unused-words-1.0.1.tgz#748aae81096fc73b3cb133d4b22e0b8bcf74602c"
-  integrity sha512-7nxITjbkYaGRyinl8lPnCl2+amj4HCb2erXd9ppOPUlRESllYJKHtLCQMwZCI8/OhKwwHEe68YKMnYKYAZz1tA==
+cspell-check-unused-words@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cspell-check-unused-words/-/cspell-check-unused-words-1.0.2.tgz#a03fdb09435e5f720edf7d2b7bbb489e1de2cd0f"
+  integrity sha512-pG+RyJls2QHpW+pPSGzg6oePL2CQxJ7s0l23DCv5GFpN8ne3U5h/ZpkeQz0Yka0Gm/gOR2V1VoZiCr24iyL2gA==
   dependencies:
-    isaacscript-common-ts "^8.0.2"
     jsonc-parser "^3.2.0"
     source-map-support "^0.5.21"
 
@@ -2660,22 +2659,22 @@ is-yarn-global@^0.4.0:
   resolved "https://registry.yarnpkg.com/is-yarn-global/-/is-yarn-global-0.4.1.tgz#b312d902b313f81e4eaf98b6361ba2b45cd694bb"
   integrity sha512-/kppl+R+LO5VmhYSEWARUFjodS25D68gvj8W7z0I7OWhUla5xWu8KL6CtB2V0R6yqhnRgbcaREMr4EEM6htLPQ==
 
-isaacscript-common-ts@^8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/isaacscript-common-ts/-/isaacscript-common-ts-8.0.2.tgz#9df9c8b1362bee124d83052906f2fc2d0eeefb9a"
-  integrity sha512-mVoooMhTXs6GPGA4eHLgfQuwB95CY0+ppTbwbEdM8Iq78PUhy4ITExjaUfMeIikAcRTJOSbuJSPdesWnW9Exyg==
+isaacscript-common-ts@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/isaacscript-common-ts/-/isaacscript-common-ts-10.0.0.tgz#f1037ad8856ef37860964b2987b913aa2e289280"
+  integrity sha512-lacHMi0+2ovSuMrtz253XjvDX1i4bER5eNbWsRBTOQp56ZTX5aGC9zKg6GyaDULTfwL/K/bD1mVG69qvsAqChQ==
 
-isaacscript-lint@^4.10.1:
-  version "4.10.1"
-  resolved "https://registry.yarnpkg.com/isaacscript-lint/-/isaacscript-lint-4.10.1.tgz#84cbc2e5bd09d81bd88917f60ee45d433530d617"
-  integrity sha512-CjXRKH2cBprwiTLkXOr5xNwcCNZzhHjmaEkYE5bODDNK4AxqG60VAaCvOQyA0D+cjnRMK5oFiznq4a3KY1SchQ==
+isaacscript-lint@^4.10.2:
+  version "4.10.2"
+  resolved "https://registry.yarnpkg.com/isaacscript-lint/-/isaacscript-lint-4.10.2.tgz#246719fa086844d0133b63207f89f45202b28d68"
+  integrity sha512-IdlLKdgKWzqoMY7abJz/FqLigt1+dPE4sP6Q+8xhucEkr+o3S82oQ0fn3MfwDMbO2E5Ngbd+KsdivtfOrqkdDQ==
   dependencies:
     "@prettier/plugin-xml" "^2.2.0"
     "@tsconfig/recommended" "^1.0.2"
     "@typescript-eslint/eslint-plugin" "^5.51.0"
     "@typescript-eslint/parser" "^5.51.0"
     cspell "^6.22.0"
-    cspell-check-unused-words "^1.0.1"
+    cspell-check-unused-words "^1.0.2"
     eslint "^8.33.0"
     eslint-config-airbnb-base "^15.0.0"
     eslint-config-airbnb-typescript "^17.0.0"
@@ -2702,10 +2701,10 @@ isaacscript-tsconfig@^4.0.0:
   dependencies:
     "@tsconfig/strictest" "^1.0.2"
 
-isaacscript@^3.6.17:
-  version "3.6.17"
-  resolved "https://registry.yarnpkg.com/isaacscript/-/isaacscript-3.6.17.tgz#96abbc94e9a27cfe9034cc39134ba28e5fb38273"
-  integrity sha512-hUoUmdl9GOETHuVsQqVXX7RYt8kxPp4ySeRImcHMZFyjvyia0bNSc+b0qh5+W9ElQM81V++XQJiaiP2ENGli/A==
+isaacscript@^3.6.27:
+  version "3.6.27"
+  resolved "https://registry.yarnpkg.com/isaacscript/-/isaacscript-3.6.27.tgz#5e9944c9ef62615136caa247124d263e14d8f7ae"
+  integrity sha512-WT1uR39arIEfBjOL6sRU2Ru0EAFWH4lGFiUpZeQ/GIXUzh/qoEkOmV2NgLcJ1dZL+9M0GN/cvmqJrTTa7oPmMw==
   dependencies:
     ajv "^8.12.0"
     chalk "4.1.2"
@@ -2713,7 +2712,7 @@ isaacscript@^3.6.17:
     figlet "^1.5.2"
     git-dirty "^1.0.2"
     glob "^8.1.0"
-    isaacscript-common-ts "^8.0.2"
+    isaacscript-common-ts "^10.0.0"
     jsonc-parser "^3.2.0"
     klaw-sync "^6.0.0"
     moment "^2.29.4"
