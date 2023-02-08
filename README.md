@@ -8,7 +8,7 @@
 
 ## Usage
 
-Type the following command while at the root of your project:
+Type the following command while in the root of your project:
 
 ```sh
 npx cspell-check-unused-words
