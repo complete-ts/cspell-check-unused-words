@@ -33,3 +33,13 @@ export function isRecord(object: unknown): object is Record<string, unknown> {
     typeof object === "object" && object !== null && !Array.isArray(object)
   );
 }
+
+/** Helper function to trim a suffix from a string, if it exists. Returns the trimmed string. */
+export function trimSuffix(string: string, prefix: string): string {
+  if (!string.endsWith(prefix)) {
+    return string;
+  }
+
+  const endCharacter = string.length - prefix.length;
+  return string.slice(0, endCharacter);
+}

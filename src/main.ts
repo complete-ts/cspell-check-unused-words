@@ -9,7 +9,7 @@ import {
   getPackageManagerExecCommand,
   getPackageManagerUsedForExistingProject,
 } from "./packageManager.js";
-import { error } from "./utils.js";
+import { error, trimSuffix } from "./utils.js";
 
 main();
 
@@ -73,19 +73,23 @@ function main() {
   const { stdout } = execShell(packageManagerExecCommand, args);
 
   const misspelledWords = stdout.split("\n");
-  const lowercaseMisspelledWords = misspelledWords.map((word) =>
+  const misspelledLowercaseWords = misspelledWords.map((word) =>
     word.toLowerCase(),
   );
-  const lowercaseMisspelledWordsSet = new Set(lowercaseMisspelledWords);
-  const uniqueMisspelledWords = [...lowercaseMisspelledWordsSet.values()];
+  const misspelledLowercaseWordsSet = new Set(misspelledLowercaseWords);
+  const misspelledUniqueWords = [...misspelledLowercaseWordsSet.values()];
 
   // Sort the words.
   // https://stackoverflow.com/questions/8996963/how-to-perform-case-insensitive-sorting-array-of-string-in-javascript
-  uniqueMisspelledWords.sort((a, b) =>
+  misspelledUniqueWords.sort((a, b) =>
     a.localeCompare(b, undefined, { sensitivity: "base" }),
   );
 
-  const misspelledWordsSet = new Set(uniqueMisspelledWords);
+  const misspelledWordsWithoutSuffix = misspelledUniqueWords.map((word) =>
+    trimSuffix(word, "'s"),
+  );
+
+  const misspelledWordsSet = new Set(misspelledWordsWithoutSuffix);
 
   // Restore the old configuration.
   writeFile(CSPELL_CONFIG_PATH, cSpellConfigString);
