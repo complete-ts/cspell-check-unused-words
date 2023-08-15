@@ -11,13 +11,13 @@ export function getJSONC(fileContents: string): Record<string, unknown> {
   let json: unknown;
   try {
     json = JSONC.parse(fileContents);
-  } catch (err) {
-    error(`Failed to parse the contents of a file as JSONC:`, err);
+  } catch (error_) {
+    error("Failed to parse the contents of a file as JSONC:", error_);
   }
 
   if (!isRecord(json)) {
     error(
-      `Failed to parse the contents of a file as JSONC, since the contents were not an object.`,
+      "Failed to parse the contents of a file as JSONC, since the contents were not an object.",
     );
   }
 

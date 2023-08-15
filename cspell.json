@@ -8,6 +8,7 @@
   "ignorePaths": [
     "*.pyc",
     ".git/**",
+    ".yarn/**",
     "dist/**",
     "node_modules/**",
     "package-lock.json",
@@ -19,8 +20,7 @@
     "dbaeumer",
     "esbenp",
     "isaacscript",
-    "loglevel",
-    "pnpm",
+    "knip",
     "sarisia",
     "technote",
     "Zamiell"

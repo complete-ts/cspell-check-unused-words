@@ -5,15 +5,15 @@ import { fileExists } from "./file.js";
 import { error, getEnumValues } from "./utils.js";
 
 const PACKAGE_MANAGER_LOCK_FILE_NAMES = {
-  [PackageManager.NPM]: "package-lock.json",
-  [PackageManager.YARN]: "yarn.lock",
-  [PackageManager.PNPM]: "pnpm-lock.yaml",
+  [PackageManager.npm]: "package-lock.json",
+  [PackageManager.yarn]: "yarn.lock",
+  [PackageManager.pnpm]: "pnpm-lock.yaml",
 } as const satisfies Record<PackageManager, string>;
 
 const PACKAGE_MANAGER_NPX_COMMANDS = {
-  [PackageManager.NPM]: "npx",
-  [PackageManager.YARN]: "npx",
-  [PackageManager.PNPM]: "pnpm exec",
+  [PackageManager.npm]: "npx",
+  [PackageManager.yarn]: "npx",
+  [PackageManager.pnpm]: "pnpm exec",
 } as const satisfies Record<PackageManager, string>;
 
 function getPackageManagerLockFileName(packageManager: PackageManager): string {
@@ -54,5 +54,5 @@ export function getPackageManagerUsedForExistingProject(): PackageManager {
   }
 
   // Assume npm by default.
-  return PackageManager.NPM;
+  return PackageManager.npm;
 }

@@ -1,4 +1,5 @@
-import { spawnSync, SpawnSyncReturns } from "node:child_process";
+import type { SpawnSyncReturns } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { error } from "./utils.js";
 
 /** Returns a tuple of exit status and stdout. The stdout is trimmed for convenience. */
@@ -14,8 +15,8 @@ export function execShell(
     spawnSyncReturns = spawnSync(command, args, {
       shell: true,
     });
-  } catch (err) {
-    error(`Failed to run the "${command}" command:`, err);
+  } catch (error_) {
+    error(`Failed to run the "${command}" command:`, error_);
   }
 
   const exitStatus = spawnSyncReturns.status;

@@ -23,6 +23,7 @@
     "**/*.mp3": true,
     "**/*.png": true,
     "**/*.wav": true,
+    "**/.yarn/": true,
     "**/dist/": true,
     "**/node_modules/": true,
   },
@@ -103,10 +104,6 @@
   },
   "[postcss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-  },
-  "[prisma]": {
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
   },
