@@ -18,4 +18,5 @@ const config = {
   ],
 };
 
+const a = 123;
 export default config;
