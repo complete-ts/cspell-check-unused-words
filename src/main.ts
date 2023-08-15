@@ -9,7 +9,7 @@ import {
   getPackageManagerExecCommand,
   getPackageManagerUsedForExistingProject,
 } from "./packageManager.js";
-import { error, trimSuffix } from "./utils.js";
+import { fatalError, trimSuffix } from "./utils.js";
 
 main();
 
@@ -17,7 +17,7 @@ function main() {
   sourceMapSupport.install();
 
   if (!fileExists(CSPELL_CONFIG_PATH)) {
-    error(
+    fatalError(
       `Failed to find your CSpell configuration file at: ${CSPELL_CONFIG_PATH}`,
     );
   }
@@ -32,7 +32,7 @@ function main() {
   }
 
   if (!Array.isArray(words)) {
-    error(
+    fatalError(
       `Failed to parse the "words" field in the "${CSPELL_CONFIG_PATH}" file, since it was not an array.`,
     );
   }
@@ -44,7 +44,7 @@ function main() {
 
   for (const word of words) {
     if (typeof word !== "string") {
-      error(
+      fatalError(
         `Failed to parse the "words" field in the "${CSPELL_CONFIG_PATH}" file, since one of the entires was of type: ${typeof word}`,
       );
     }

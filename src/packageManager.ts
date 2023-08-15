@@ -2,7 +2,7 @@ import * as path from "node:path";
 import { CWD } from "./constants.js";
 import { PackageManager } from "./enums/PackageManager.js";
 import { fileExists } from "./file.js";
-import { error, getEnumValues } from "./utils.js";
+import { fatalError, getEnumValues } from "./utils.js";
 
 const PACKAGE_MANAGER_LOCK_FILE_NAMES = {
   [PackageManager.npm]: "package-lock.json",
@@ -43,7 +43,7 @@ export function getPackageManagerUsedForExistingProject(): PackageManager {
       .map((packageManager) => getPackageManagerLockFileName(packageManager))
       .map((packageManagerLockFileName) => `"${packageManagerLockFileName}"`)
       .join(" & ");
-    error(
+    fatalError(
       `Multiple different kinds of package manager lock files were found (${packageManagerLockFileNames}). You should delete the ones that you are not using so that this program can correctly detect your package manager.`,
     );
   }

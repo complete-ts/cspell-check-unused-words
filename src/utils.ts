@@ -3,7 +3,7 @@
  *
  * All of the arguments will be directly passed to the `console.error` function.
  */
-export function error(...args: unknown[]): never {
+export function fatalError(...args: unknown[]): never {
   console.error(...args);
   return process.exit(1);
 }
