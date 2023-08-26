@@ -1956,6 +1956,7 @@ __metadata:
     "@types/node": ^20.5.6
     "@types/source-map-support": ^0.5.7
     isaacscript: ^3.9.2
+    isaacscript-common-ts: ^11.2.0
     isaacscript-lint: ^5.5.0
     isaacscript-tsconfig: ^4.0.0
     jsonc-parser: ^3.2.0
@@ -3568,6 +3569,13 @@ __metadata:
   version: 0.4.1
   resolution: "is-yarn-global@npm:0.4.1"
   checksum: 79ec4e6f581c53d4fefdf5f6c237f9a3ad8db29c85cdc4659e76ae345659317552052a97b7e56952aa5d94a23c798ebec8ccad72fb14d3b26dc647ddceddd716
+  languageName: node
+  linkType: hard
+
+"isaacscript-common-ts@npm:^11.2.0":
+  version: 11.2.0
+  resolution: "isaacscript-common-ts@npm:11.2.0"
+  checksum: 19a2069423814e622b4b5087f44b87a339e4b7ece59a4116f0a133dd95b19a930a6d1996d4a68068c276677f8e2ce183d0387758e6b66e71ca823ca5eef07980
   languageName: node
   linkType: hard
 

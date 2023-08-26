@@ -1,15 +1,20 @@
 #!/usr/bin/env node
 
+import { fatalError, trimSuffix } from "isaacscript-common-ts";
 import sourceMapSupport from "source-map-support";
-import { CSPELL_CONFIG_PATH } from "./constants.js";
+import { CSPELL_CONFIG_PATH, CSPELL_TEMP_CONFIG_PATH } from "./constants.js";
 import { execShell } from "./exec.js";
-import { fileExists, readFile, writeFile } from "./file.js";
-import { getJSONC } from "./json.js";
+import {
+  deleteFileOrDirectory,
+  fileExists,
+  readFile,
+  writeFile,
+} from "./file.js";
+import { getJSONCAsObject } from "./json.js";
 import {
   getPackageManagerExecCommand,
   getPackageManagerUsedForExistingProject,
 } from "./packageManager.js";
-import { fatalError, trimSuffix } from "./utils.js";
 
 main();
 
@@ -22,8 +27,8 @@ function main() {
     );
   }
 
-  const cSpellConfigString = readFile(CSPELL_CONFIG_PATH);
-  const cSpellConfig = getJSONC(cSpellConfigString);
+  const cSpellConfigContents = readFile(CSPELL_CONFIG_PATH);
+  const cSpellConfig = getJSONCAsObject(cSpellConfigContents);
   const { words } = cSpellConfig;
 
   // Do nothing if they do not have a "words" array inside of the config.
@@ -33,7 +38,7 @@ function main() {
 
   if (!Array.isArray(words)) {
     fatalError(
-      `Failed to parse the "words" field in the "${CSPELL_CONFIG_PATH}" file, since it was not an array.`,
+      `Failed to parse the "words" property in the "${CSPELL_CONFIG_PATH}" file, since it was not an array.`,
     );
   }
 
@@ -45,7 +50,7 @@ function main() {
   for (const word of words) {
     if (typeof word !== "string") {
       fatalError(
-        `Failed to parse the "words" field in the "${CSPELL_CONFIG_PATH}" file, since one of the entires was of type: ${typeof word}`,
+        `Failed to parse the "words" array in the "${CSPELL_CONFIG_PATH}" file, since one of the entires was of type: ${typeof word}`,
       );
     }
   }
@@ -57,7 +62,7 @@ function main() {
   // command won't work properly.)
   cSpellConfig["words"] = undefined;
   const cSpellConfigWithoutWords = JSON.stringify(cSpellConfig);
-  writeFile(CSPELL_CONFIG_PATH, cSpellConfigWithoutWords);
+  writeFile(CSPELL_TEMP_CONFIG_PATH, cSpellConfigWithoutWords);
 
   // Run CSpell without any of the ignored words.
   const packageManager = getPackageManagerUsedForExistingProject();
@@ -69,6 +74,8 @@ function main() {
     "--no-summary",
     "--unique",
     "--words-only",
+    "--config",
+    CSPELL_TEMP_CONFIG_PATH,
   ];
   const { stdout } = execShell(packageManagerExecCommand, args);
 
@@ -91,8 +98,8 @@ function main() {
 
   const misspelledWordsSet = new Set(misspelledWordsWithoutSuffix);
 
-  // Restore the old configuration.
-  writeFile(CSPELL_CONFIG_PATH, cSpellConfigString);
+  // Delete the temporary configuration.
+  deleteFileOrDirectory(CSPELL_CONFIG_PATH);
 
   // Check that each ignored word in the configuration file is actually being used.
   let oneOrMoreFailures = false;

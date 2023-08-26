@@ -1,5 +1,5 @@
+import { fatalError, isRecord } from "isaacscript-common-ts";
 import * as JSONC from "jsonc-parser";
-import { fatalError, isRecord } from "./utils.js";
 
 /**
  * Helper function to a string as JSON.
@@ -7,7 +7,9 @@ import { fatalError, isRecord } from "./utils.js";
  * This expects the string to contain an object (i.e. `{}`), not an array or a primitive. The
  * function will terminate the program if any errors occur.
  */
-export function getJSONC(fileContents: string): Record<string, unknown> {
+export function getJSONCAsObject(
+  fileContents: string,
+): Record<string, unknown> {
   let json: unknown;
   try {
     json = JSONC.parse(fileContents);

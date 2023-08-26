@@ -1,5 +1,15 @@
+import { fatalError } from "isaacscript-common-ts";
 import * as fs from "node:fs";
-import { fatalError } from "./utils.js";
+
+export function deleteFileOrDirectory(filePath: string): void {
+  try {
+    fs.rmSync(filePath, {
+      recursive: true,
+    });
+  } catch (error) {
+    fatalError(`Failed to delete file or directory "${filePath}":`, error);
+  }
+}
 
 export function fileExists(filePath: string): boolean {
   let pathExists: boolean;

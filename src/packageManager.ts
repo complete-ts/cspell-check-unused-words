@@ -1,8 +1,8 @@
+import { fatalError, getEnumValues } from "isaacscript-common-ts";
 import * as path from "node:path";
 import { CWD } from "./constants.js";
 import { PackageManager } from "./enums/PackageManager.js";
 import { fileExists } from "./file.js";
-import { fatalError, getEnumValues } from "./utils.js";
 
 const PACKAGE_MANAGER_LOCK_FILE_NAMES = {
   [PackageManager.npm]: "package-lock.json",
