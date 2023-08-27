@@ -4,12 +4,7 @@ import { fatalError, trimSuffix } from "isaacscript-common-ts";
 import sourceMapSupport from "source-map-support";
 import { CSPELL_CONFIG_PATH, CSPELL_TEMP_CONFIG_PATH } from "./constants.js";
 import { execShell } from "./exec.js";
-import {
-  deleteFileOrDirectory,
-  fileExists,
-  readFile,
-  writeFile,
-} from "./file.js";
+import { fileExists, readFile, writeFile } from "./file.js";
 import { getJSONCAsObject } from "./json.js";
 import {
   getPackageManagerExecCommand,
@@ -61,6 +56,11 @@ function main() {
   // Delete all of the ignored words from the existing config. (Otherwise, the upcoming CSpell
   // command won't work properly.)
   cSpellConfig["words"] = undefined;
+
+  // We have to add the "noConfigSearch" option:
+  // https://github.com/streetsidesoftware/cspell/issues/4750
+  cSpellConfig["noConfigSearch"] = true;
+
   const cSpellConfigWithoutWords = JSON.stringify(cSpellConfig);
   writeFile(CSPELL_TEMP_CONFIG_PATH, cSpellConfigWithoutWords);
 
@@ -99,7 +99,7 @@ function main() {
   const misspelledWordsSet = new Set(misspelledWordsWithoutSuffix);
 
   // Delete the temporary configuration.
-  deleteFileOrDirectory(CSPELL_CONFIG_PATH);
+  /// deleteFileOrDirectory(CSPELL_TEMP_CONFIG_PATH);
 
   // Check that each ignored word in the configuration file is actually being used.
   let oneOrMoreFailures = false;
