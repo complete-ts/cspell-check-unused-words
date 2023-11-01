@@ -28,6 +28,7 @@
     "start": "tsx src/main.ts"
   },
   "dependencies": {
+    "chalk": "^5.3.0",
     "isaacscript-common-ts": "^11.3.0",
     "jsonc-parser": "^3.2.0",
     "source-map-support": "^0.5.21",

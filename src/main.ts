@@ -1,8 +1,14 @@
 #!/usr/bin/env node
 
+import chalk from "chalk";
 import { fatalError, trimSuffix } from "isaacscript-common-ts";
+import path from "node:path";
 import sourceMapSupport from "source-map-support";
-import { CSPELL_CONFIG_PATH, CSPELL_TEMP_CONFIG_PATH } from "./constants.js";
+import {
+  CSPELL_CONFIG_NAMES,
+  CSPELL_TEMP_CONFIG_PATH,
+  CWD,
+} from "./constants.js";
 import { execShell } from "./exec.js";
 import {
   deleteFileOrDirectory,
@@ -21,13 +27,8 @@ main();
 function main() {
   sourceMapSupport.install();
 
-  if (!fileExists(CSPELL_CONFIG_PATH)) {
-    fatalError(
-      `Failed to find your CSpell configuration file at: ${CSPELL_CONFIG_PATH}`,
-    );
-  }
-
-  const cSpellConfigContents = readFile(CSPELL_CONFIG_PATH);
+  const cSpellConfigPath = getCSpellConfigPath();
+  const cSpellConfigContents = readFile(cSpellConfigPath);
   const cSpellConfig = getJSONCAsObject(cSpellConfigContents);
   const { words } = cSpellConfig;
 
@@ -38,7 +39,11 @@ function main() {
 
   if (!Array.isArray(words)) {
     fatalError(
-      `Failed to parse the "words" property in the "${CSPELL_CONFIG_PATH}" file, since it was not an array.`,
+      `Failed to parse the "${chalk.green(
+        "words",
+      )}" property in the "${chalk.green(
+        cSpellConfigPath,
+      )}" file, since it was not an array.`,
     );
   }
 
@@ -50,7 +55,13 @@ function main() {
   for (const word of words) {
     if (typeof word !== "string") {
       fatalError(
-        `Failed to parse the "words" array in the "${CSPELL_CONFIG_PATH}" file, since one of the entires was of type: ${typeof word}`,
+        `Failed to parse the "${chalk.green(
+          "words",
+        )}" array in the "${chalk.green(
+          cSpellConfigPath,
+        )}" file, since one of the entires was of type: ${chalk.green(
+          typeof word,
+        )}`,
       );
     }
   }
@@ -112,7 +123,9 @@ function main() {
   for (const word of lowercaseWords) {
     if (!misspelledWordsSet.has(word)) {
       console.log(
-        `The following word in the CSpell config is not being used: ${word}`,
+        `The following word in the CSpell config is not being used: ${chalk.green(
+          word,
+        )}`,
       );
       oneOrMoreFailures = true;
     }
@@ -120,4 +133,19 @@ function main() {
 
   const exitCode = oneOrMoreFailures ? 1 : 0;
   process.exit(exitCode);
+}
+
+function getCSpellConfigPath(): string {
+  for (const cSpellConfigName of CSPELL_CONFIG_NAMES) {
+    const cSpellConfigPath = path.join(CWD, cSpellConfigName);
+    if (fileExists(cSpellConfigPath)) {
+      return cSpellConfigPath;
+    }
+  }
+
+  fatalError(
+    `Failed to find your CSpell configuration file in the current working directory: ${chalk.green(
+      CWD,
+    )}`,
+  );
 }

@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD033 -->
 
-`cspell-check-unused-words` is a helper program for people who use [CSpell](https://cspell.org/). It will check your "cspell.json" file for unused words. You can use it in your linting pipeline to ensure that your project does not have any "orphaned" words.
+`cspell-check-unused-words` is a helper program for people who use [CSpell](https://cspell.org/). It will check your "cspell.json" or "cspell.jsonc" file for unused words. You can use it in your linting pipeline to ensure that your project does not have any "orphaned" words.
 
 <br>
 
