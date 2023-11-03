@@ -39,7 +39,7 @@
   "devDependencies": {
     "@types/node": "^20.8.10",
     "@types/source-map-support": "^0.5.9",
-    "isaacscript": "^3.17.6",
+    "isaacscript": "^3.17.7",
     "isaacscript-lint": "^6.2.2",
     "isaacscript-tsconfig": "^5.0.0",
     "tsx": "^3.14.0",
