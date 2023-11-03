@@ -6,7 +6,7 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: lts/*
-        cache: PACKAGE_MANAGER_NAME
+        cache: yarn
 
     - name: Retrieve the cached "node_modules" directory (if present)
       uses: actions/cache@v3
