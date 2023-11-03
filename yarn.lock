@@ -35,10 +35,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-validator-identifier@npm:^7.22.5":
-  version: 7.22.5
-  resolution: "@babel/helper-validator-identifier@npm:7.22.5"
-  checksum: 2ff1d3833154d17ccf773b8a71fdc0cd0e7356aa8033179d0e3133787dfb33d97796cbff8b92a97c56268205337dfc720227aeddc677c1bc08ae1b67a95252d7
+"@babel/helper-validator-identifier@npm:^7.22.20":
+  version: 7.22.20
+  resolution: "@babel/helper-validator-identifier@npm:7.22.20"
+  checksum: dcad63db345fb110e032de46c3688384b0008a42a4845180ce7cd62b1a9c0507a1bed727c4d1060ed1a03ae57b4d918570259f81724aaac1a5b776056f37504e
   languageName: node
   linkType: hard
 
@@ -1261,7 +1261,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prettier/plugin-xml@npm:^3.2.1":
+"@prettier/plugin-xml@npm:^3.2.2":
   version: 3.2.2
   resolution: "@prettier/plugin-xml@npm:3.2.2"
   dependencies:
@@ -1441,7 +1441,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^6.8.0":
+"@typescript-eslint/eslint-plugin@npm:^6.9.1":
   version: 6.9.1
   resolution: "@typescript-eslint/eslint-plugin@npm:6.9.1"
   dependencies:
@@ -1466,7 +1466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^6.8.0":
+"@typescript-eslint/parser@npm:^6.9.1":
   version: 6.9.1
   resolution: "@typescript-eslint/parser@npm:6.9.1"
   dependencies:
@@ -2410,7 +2410,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cspell-check-unused-words@npm:^1.0.6, cspell-check-unused-words@workspace:.":
+"cspell-check-unused-words@npm:^1.0.8, cspell-check-unused-words@workspace:.":
   version: 0.0.0-use.local
   resolution: "cspell-check-unused-words@workspace:."
   dependencies:
@@ -2420,7 +2420,7 @@ __metadata:
     isaacscript: "npm:^3.16.0"
     isaacscript-common-node: "npm:^1.0.5"
     isaacscript-common-ts: "npm:^11.3.1"
-    isaacscript-lint: "npm:^6.2.0"
+    isaacscript-lint: "npm:^6.2.1"
     isaacscript-tsconfig: "npm:^5.0.0"
     rimraf: "npm:^5.0.5"
     source-map-support: "npm:^0.5.21"
@@ -3184,11 +3184,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-unicorn@npm:^48.0.1":
-  version: 48.0.1
-  resolution: "eslint-plugin-unicorn@npm:48.0.1"
+"eslint-plugin-unicorn@npm:^49.0.0":
+  version: 49.0.0
+  resolution: "eslint-plugin-unicorn@npm:49.0.0"
   dependencies:
-    "@babel/helper-validator-identifier": "npm:^7.22.5"
+    "@babel/helper-validator-identifier": "npm:^7.22.20"
     "@eslint-community/eslint-utils": "npm:^4.4.0"
     ci-info: "npm:^3.8.0"
     clean-regexp: "npm:^1.0.0"
@@ -3196,7 +3196,6 @@ __metadata:
     indent-string: "npm:^4.0.0"
     is-builtin-module: "npm:^3.2.1"
     jsesc: "npm:^3.0.2"
-    lodash: "npm:^4.17.21"
     pluralize: "npm:^8.0.0"
     read-pkg-up: "npm:^7.0.1"
     regexp-tree: "npm:^0.1.27"
@@ -3204,8 +3203,8 @@ __metadata:
     semver: "npm:^7.5.4"
     strip-indent: "npm:^3.0.0"
   peerDependencies:
-    eslint: ">=8.44.0"
-  checksum: 158a9fc41c213a2d4a4d7ed9c866c86f9f1901d7f7371c60f3e18d05be73cb6982b72c33a679955142116032127835f8550b466484885c0cedb2e7ed951136ac
+    eslint: ">=8.52.0"
+  checksum: e5dea3f3aeef197bfdb17b69bed955d18b8c19cef95fb66292d340899a1132fdee1a1de1ef2806f6055d95fd23b7e6140299183790f06a673919dd751ecb8bfd
   languageName: node
   linkType: hard
 
@@ -3240,7 +3239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.51.0":
+"eslint@npm:^8.52.0":
   version: 8.52.0
   resolution: "eslint@npm:8.52.0"
   dependencies:
@@ -4530,16 +4529,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-lint@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "isaacscript-lint@npm:6.2.0"
+"isaacscript-lint@npm:^6.2.1":
+  version: 6.2.1
+  resolution: "isaacscript-lint@npm:6.2.1"
   dependencies:
-    "@prettier/plugin-xml": "npm:^3.2.1"
-    "@typescript-eslint/eslint-plugin": "npm:^6.8.0"
-    "@typescript-eslint/parser": "npm:^6.8.0"
+    "@prettier/plugin-xml": "npm:^3.2.2"
+    "@typescript-eslint/eslint-plugin": "npm:^6.9.1"
+    "@typescript-eslint/parser": "npm:^6.9.1"
     cspell: "npm:^7.3.8"
-    cspell-check-unused-words: "npm:^1.0.6"
-    eslint: "npm:^8.51.0"
+    cspell-check-unused-words: "npm:^1.0.8"
+    eslint: "npm:^8.52.0"
     eslint-config-isaacscript: "npm:^4.7.0"
     eslint-config-prettier: "npm:^9.0.0"
     eslint-plugin-deprecation: "npm:^2.0.0"
@@ -4550,15 +4549,15 @@ __metadata:
     eslint-plugin-n: "npm:^16.2.0"
     eslint-plugin-no-autofix: "npm:^1.2.3"
     eslint-plugin-only-warn: "npm:^1.1.0"
-    eslint-plugin-unicorn: "npm:^48.0.1"
-    knip: "npm:^2.33.4"
+    eslint-plugin-unicorn: "npm:^49.0.0"
+    knip: "npm:^2.38.6"
     prettier: "npm:^3.0.3"
     prettier-plugin-organize-imports: "npm:^3.2.3"
     prettier-plugin-packagejson: "npm:^2.4.6"
     ts-prune-2: "npm:^0.10.7"
   peerDependencies:
     typescript: ">= 5.0.0"
-  checksum: 9117cc8789018ff44c7ef38039ee3e58bb615d130f9343bbbf6634926a9e0d9c87644c18734b6d84bed0dfda629f6a59f6c581e5e4fd2297771c205afe76a87f
+  checksum: 71a24bdb273a3250fc9e0567aaf94be387e8fe15658b23baa5cebd63851c90e3295502c9976ccca8e0d5f74798a69dab06f11599aeb6f921a439c4193010bce5
   languageName: node
   linkType: hard
 
@@ -4853,9 +4852,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knip@npm:^2.33.4":
-  version: 2.38.5
-  resolution: "knip@npm:2.38.5"
+"knip@npm:^2.38.6":
+  version: 2.38.6
+  resolution: "knip@npm:2.38.6"
   dependencies:
     "@ericcornelissen/bash-parser": "npm:^0.5.2"
     "@npmcli/map-workspaces": "npm:^3.0.4"
@@ -4879,7 +4878,7 @@ __metadata:
     zod-validation-error: "npm:1.5.0"
   bin:
     knip: dist/cli.js
-  checksum: 6466f43c41a1c9916a901770579edd79293906c5d689f6201d300178066c2225af2103ca6e167aafb4d9ff9be80ae829d01c68a44b5d653734b66e98101c4ca5
+  checksum: bfb7461d9efc23de0c535e0abaedf80e2c36f3c89dcb74f4a1f6f2e2aac077ee2937874314ce55c874d4be0935edf76f1998d7ad9874be5ddd85667c45585121
   languageName: node
   linkType: hard
 
