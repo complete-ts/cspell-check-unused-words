@@ -1,4 +1,5 @@
-import { fatalError } from "isaacscript-common-ts";
+import chalk from "chalk";
+import { fatalError } from "isaacscript-common-node";
 import type { SpawnSyncReturns } from "node:child_process";
 import { spawnSync } from "node:child_process";
 
@@ -16,12 +17,14 @@ export function execShell(
       shell: true,
     });
   } catch (error) {
-    fatalError(`Failed to run the "${command}" command:`, error);
+    fatalError(`Failed to run the "${chalk.green(command)}" command:`, error);
   }
 
   const exitStatus = spawnSyncReturns.status;
   if (exitStatus === null) {
-    fatalError(`Failed to get the return status of command: ${command}`);
+    fatalError(
+      `Failed to get the return status of command: ${chalk.green(command)}`,
+    );
   }
 
   const stdout = spawnSyncReturns.output.join("\n").trim();

@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 
 import chalk from "chalk";
-import { fatalError, trimSuffix } from "isaacscript-common-ts";
+import {
+  deleteFileOrDirectory,
+  fatalError,
+  getJSONC,
+  getPackageManagerExecCommand,
+  getPackageManagerForProject,
+  isFile,
+  writeFile,
+} from "isaacscript-common-node";
+import { trimSuffix } from "isaacscript-common-ts";
 import path from "node:path";
 import sourceMapSupport from "source-map-support";
 import {
@@ -10,17 +19,6 @@ import {
   CWD,
 } from "./constants.js";
 import { execShell } from "./exec.js";
-import {
-  deleteFileOrDirectory,
-  fileExists,
-  readFile,
-  writeFile,
-} from "./file.js";
-import { getJSONCAsObject } from "./json.js";
-import {
-  getPackageManagerExecCommand,
-  getPackageManagerUsedForExistingProject,
-} from "./packageManager.js";
 
 main();
 
@@ -28,8 +26,7 @@ function main() {
   sourceMapSupport.install();
 
   const cSpellConfigPath = getCSpellConfigPath();
-  const cSpellConfigContents = readFile(cSpellConfigPath);
-  const cSpellConfig = getJSONCAsObject(cSpellConfigContents);
+  const cSpellConfig = getJSONC(cSpellConfigPath);
   const { words } = cSpellConfig;
 
   // Do nothing if they do not have a "words" array inside of the config.
@@ -81,7 +78,7 @@ function main() {
   writeFile(CSPELL_TEMP_CONFIG_PATH, cSpellConfigWithoutWords);
 
   // Run CSpell without any of the ignored words.
-  const packageManager = getPackageManagerUsedForExistingProject();
+  const packageManager = getPackageManagerForProject(CWD);
   const packageManagerExecCommand =
     getPackageManagerExecCommand(packageManager);
   const args = [
@@ -138,7 +135,7 @@ function main() {
 function getCSpellConfigPath(): string {
   for (const cSpellConfigName of CSPELL_CONFIG_NAMES) {
     const cSpellConfigPath = path.join(CWD, cSpellConfigName);
-    if (fileExists(cSpellConfigPath)) {
+    if (isFile(cSpellConfigPath)) {
       return cSpellConfigPath;
     }
   }
