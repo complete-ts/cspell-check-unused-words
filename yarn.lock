@@ -2432,7 +2432,7 @@ __metadata:
     "@types/node": "npm:^20.8.10"
     "@types/source-map-support": "npm:^0.5.9"
     chalk: "npm:^5.3.0"
-    isaacscript: "npm:^3.17.5"
+    isaacscript: "npm:^3.17.6"
     isaacscript-common-node: "npm:^1.0.8"
     isaacscript-common-ts: "npm:^11.3.1"
     isaacscript-lint: "npm:^6.2.2"
@@ -4586,9 +4586,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript@npm:^3.17.5":
-  version: 3.17.5
-  resolution: "isaacscript@npm:3.17.5"
+"isaacscript@npm:^3.17.6":
+  version: 3.17.6
+  resolution: "isaacscript@npm:3.17.6"
   dependencies:
     "@zamiell/sync-directory": "npm:^6.0.5"
     ajv: "npm:^8.12.0"
@@ -4610,7 +4610,7 @@ __metadata:
     typescript: ">= 5.0.0"
   bin:
     isaacscript: dist/main.js
-  checksum: c7ce1fbc1400a3c16e0d60ef2d86e1f67716f01b7d1e85210daee8e3ce87b37ef10d5867a586a5396609e28cd28f93cbba2b84aa09fa973743d69915ac589184
+  checksum: 2072d4bd1474dded6d85e05f88742c201311d2f5b632a8c6da679dd972e2b2f69ec31277bdee502f3f5e37ff2dc9e8be4f0efd5f978cd3a28a9b6b23dd394da9
   languageName: node
   linkType: hard
 
