@@ -42,8 +42,8 @@
     "isaacscript-lint": "^6.2.0",
     "isaacscript-tsconfig": "^5.0.0",
     "rimraf": "^5.0.5",
-    "typescript": "^5.2.2",
-    "tsx": "^3.14.0"
+    "tsx": "^3.14.0",
+    "typescript": "^5.2.2"
   },
   "packageManager": "yarn@4.0.1"
 }
