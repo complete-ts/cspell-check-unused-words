@@ -2257,9 +2257,9 @@ __metadata:
     "@types/source-map-support": "npm:^0.5.9"
     chalk: "npm:^5.3.0"
     isaacscript: "npm:^3.16.0"
-    isaacscript-common-ts: "npm:^11.3.0"
+    isaacscript-common-ts: "npm:^11.3.1"
     isaacscript-lint: "npm:^6.2.0"
-    isaacscript-tsconfig: "npm:^4.1.1"
+    isaacscript-tsconfig: "npm:^5.0.0"
     jsonc-parser: "npm:^3.2.0"
     rimraf: "npm:^5.0.5"
     source-map-support: "npm:^0.5.21"
@@ -4231,10 +4231,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common-ts@npm:^11.3.0":
-  version: 11.3.0
-  resolution: "isaacscript-common-ts@npm:11.3.0"
-  checksum: 803939f8a7d7261c1ace32d16d8f980ae353072f26c47a5c0cd3af9e26c7117362789cfed7ff2729bfb78b2d1d98a3a5c52ac6d8c1ddc2b32560372502c704c2
+"isaacscript-common-ts@npm:^11.3.1":
+  version: 11.3.1
+  resolution: "isaacscript-common-ts@npm:11.3.1"
+  checksum: 20665865e62359addb7cc758d1cffdaf6ec2f2e274772d3bc55be5deaf85c8d77021a7c6ec984d7efc3ce4d963226a42ef9295d61fe8bef679ea3826dcbdd0ed
   languageName: node
   linkType: hard
 
@@ -4270,13 +4270,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-tsconfig@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "isaacscript-tsconfig@npm:4.1.1"
+"isaacscript-tsconfig@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "isaacscript-tsconfig@npm:5.0.0"
   dependencies:
     "@tsconfig/node-lts": "npm:^18.12.5"
     "@tsconfig/strictest": "npm:^2.0.2"
-  checksum: 9f8fc5f4b01e1ef9da091c3bb933ce05ce8e136b395ed9d3faff31de97fef3bac630a79a693ec790349f919ec2b29c2529357a78f8816800d453f99e20a25dc0
+  checksum: ae9db51da1c3de5a69718c113ac20c3b3d194b592dc8afee48d4987236ae5ef4850fca7bfd048c2a49c2b28aee125a8dcdcac0f1c16ee01fd6479fd05e79f10e
   languageName: node
   linkType: hard
 
