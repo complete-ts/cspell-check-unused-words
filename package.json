@@ -27,7 +27,7 @@
     "build": "tsx ./scripts/build.ts",
     "lint": "tsx ./scripts/lint.ts",
     "publish": "isaacscript publish-ts",
-    "start": "tsx src/main.ts",
+    "start": "tsx ./src/main.ts",
     "update": "isaacscript update"
   },
   "dependencies": {
