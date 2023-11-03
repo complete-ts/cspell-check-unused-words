@@ -2418,11 +2418,10 @@ __metadata:
     "@types/source-map-support": "npm:^0.5.9"
     chalk: "npm:^5.3.0"
     isaacscript: "npm:^3.16.0"
-    isaacscript-common-node: "npm:^1.0.4"
+    isaacscript-common-node: "npm:^1.0.5"
     isaacscript-common-ts: "npm:^11.3.1"
     isaacscript-lint: "npm:^6.2.0"
     isaacscript-tsconfig: "npm:^5.0.0"
-    jsonc-parser: "npm:^3.2.0"
     rimraf: "npm:^5.0.5"
     source-map-support: "npm:^0.5.21"
     tsx: "npm:^3.14.0"
@@ -4508,9 +4507,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common-node@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "isaacscript-common-node@npm:1.0.4"
+"isaacscript-common-node@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "isaacscript-common-node@npm:1.0.5"
   dependencies:
     "@arktype/fs": "npm:^0.0.1"
     chalk: "npm:^5.3.0"
@@ -4518,8 +4517,9 @@ __metadata:
     esbuild: "npm:^0.19.5"
     execa: "npm:^8.0.1"
     isaacscript-common-ts: "npm:^11.3.1"
+    jsonc-parser: "npm:^3.2.0"
     npm-check-updates: "npm:^16.14.6"
-  checksum: a0ea75a7131c7e9c7c621bb283ab42079a44758bef6783652d8eca2167d1da1783226e72559759d11c923b4668f56804c8a0806f42416d22ba083ef30f730c54
+  checksum: cf5fe4575ac287883bb23fbf9840db9c50aefdcef1d5d78d549882bcc8faaa232622ef09a48e313967cffa13f9e5148967b40ad24c170c7ef3f8598b7c569022
   languageName: node
   linkType: hard
 
