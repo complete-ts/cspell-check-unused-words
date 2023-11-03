@@ -1,6 +1,6 @@
 {
   "name": "cspell-check-unused-words",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A command line tool to check for unused words in the cspell.json file",
   "keywords": [
     "cspell"
