@@ -2,11 +2,10 @@
 
 import chalk from "chalk";
 import {
+  $op,
   deleteFileOrDirectory,
   fatalError,
   getJSONC,
-  getPackageManagerExecCommand,
-  getPackageManagerForProject,
   isFile,
   writeFile,
 } from "isaacscript-common-node";
@@ -18,7 +17,6 @@ import {
   CSPELL_TEMP_CONFIG_PATH,
   CWD,
 } from "./constants.js";
-import { execShell } from "./exec.js";
 
 main();
 
@@ -78,19 +76,10 @@ function main() {
   writeFile(CSPELL_TEMP_CONFIG_PATH, cSpellConfigWithoutWords);
 
   // Run CSpell without any of the ignored words.
-  const packageManager = getPackageManagerForProject(CWD);
-  const packageManagerExecCommand =
-    getPackageManagerExecCommand(packageManager);
-  const args = [
-    "cspell",
-    "--no-progress",
-    "--no-summary",
-    "--unique",
-    "--words-only",
-    "--config",
-    CSPELL_TEMP_CONFIG_PATH,
-  ];
-  const { stdout } = execShell(packageManagerExecCommand, args);
+  const $$ = $op({ reject: false }); // CSpell is expected to return a non-zero exit code.
+  const {
+    stdout,
+  } = $$.sync`cspell --no-progress --no-summary --unique --words-only --config ${CSPELL_TEMP_CONFIG_PATH}`;
 
   const misspelledWords = stdout.split("\n");
   const misspelledLowercaseWords = misspelledWords.map((word) =>

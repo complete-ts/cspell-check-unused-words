@@ -2454,6 +2454,7 @@ __metadata:
     "@types/node": "npm:^20.8.10"
     "@types/source-map-support": "npm:^0.5.9"
     chalk: "npm:^5.3.0"
+    execa: "npm:^8.0.1"
     isaacscript: "npm:^3.17.9"
     isaacscript-common-node: "npm:^1.1.1"
     isaacscript-common-ts: "npm:^11.3.1"
