@@ -77,9 +77,8 @@ function main() {
 
   // Run CSpell without any of the ignored words.
   const $$ = $op({ reject: false }); // CSpell is expected to return a non-zero exit code.
-  const {
-    stdout,
-  } = $$.sync`cspell --no-progress --no-summary --unique --words-only --config ${CSPELL_TEMP_CONFIG_PATH}`;
+  const { stdout } =
+    $$.sync`cspell --no-progress --no-summary --unique --words-only --config ${CSPELL_TEMP_CONFIG_PATH}`;
 
   const misspelledWords = stdout.split("\n");
   const misspelledLowercaseWords = misspelledWords.map((word) =>
