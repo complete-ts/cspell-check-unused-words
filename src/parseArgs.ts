@@ -1,5 +1,15 @@
 import { Command } from "@commander-js/extra-typings";
-import { description, name, version } from "../package.json";
+import {
+  dirName,
+  getPackageJSON,
+  getPackageJSONFieldMandatory,
+} from "isaacscript-common-node";
+
+const __dirname = dirName();
+const packageJSON = getPackageJSON(__dirname);
+const name = getPackageJSONFieldMandatory(packageJSON, "name");
+const version = getPackageJSONFieldMandatory(packageJSON, "version");
+const description = getPackageJSONFieldMandatory(packageJSON, "description");
 
 export const program = new Command()
   .name(name)

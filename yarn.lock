@@ -19,6 +19,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@arktype/fs@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "@arktype/fs@npm:0.0.8"
+  checksum: 15d8df9cd5adb245593e288d274c17b4f0dea798166c421c5674337ea6ee8e1e8c024c4cca6b01b029b76d3df6fc8784be5420d5989bcf7f3e412c0d8992a5fa
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0":
   version: 7.22.13
   resolution: "@babel/code-frame@npm:7.22.13"
@@ -2380,7 +2387,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cspell-check-unused-words@npm:^1.0.11, cspell-check-unused-words@workspace:.":
+"cspell-check-unused-words@npm:^1.1.0, cspell-check-unused-words@workspace:.":
   version: 0.0.0-use.local
   resolution: "cspell-check-unused-words@workspace:."
   dependencies:
@@ -2389,9 +2396,9 @@ __metadata:
     chalk: "npm:^5.3.0"
     commander: "npm:^11.1.0"
     isaacscript: "npm:^3.33.0"
-    isaacscript-common-node: "npm:^1.4.0"
+    isaacscript-common-node: "npm:^1.5.0"
     isaacscript-common-ts: "npm:^13.1.0"
-    isaacscript-lint: "npm:^6.11.1"
+    isaacscript-lint: "npm:^6.12.0"
     isaacscript-tsconfig: "npm:^5.0.0"
     tsx: "npm:^4.6.2"
     typescript: "npm:^5.3.3"
@@ -4389,6 +4396,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"isaacscript-common-node@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "isaacscript-common-node@npm:1.5.0"
+  dependencies:
+    "@arktype/fs": "npm:^0.0.8"
+    chalk: "npm:^5.3.0"
+    command-exists: "npm:^1.2.9"
+    diff: "npm:^5.1.0"
+    dotenv: "npm:^16.3.1"
+    execa: "npm:^8.0.1"
+    isaacscript-common-ts: "npm:^13.1.0"
+    jsonc-parser: "npm:^3.2.0"
+    npm-check-updates: "npm:^16.14.12"
+    zod: "npm:^3.22.4"
+  checksum: aaac7e63135bd494c313c1f14509a4fe21223131f7c5b86e6f0f8cbdc422271b5ca814f9975e838eb80f90470463f0c035e33771427fce320d20eb13927d3bfe
+  languageName: node
+  linkType: hard
+
 "isaacscript-common-ts@npm:^11.6.0":
   version: 11.6.0
   resolution: "isaacscript-common-ts@npm:11.6.0"
@@ -4410,15 +4435,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-lint@npm:^6.11.1":
-  version: 6.11.1
-  resolution: "isaacscript-lint@npm:6.11.1"
+"isaacscript-lint@npm:^6.12.0":
+  version: 6.12.0
+  resolution: "isaacscript-lint@npm:6.12.0"
   dependencies:
     "@prettier/plugin-xml": "npm:^3.2.2"
     "@typescript-eslint/eslint-plugin": "npm:^6.14.0"
     "@typescript-eslint/parser": "npm:^6.14.0"
     cspell: "npm:^8.1.3"
-    cspell-check-unused-words: "npm:^1.0.11"
+    cspell-check-unused-words: "npm:^1.1.0"
     eslint: "npm:^8.55.0"
     eslint-config-isaacscript: "npm:^4.14.1"
     eslint-config-prettier: "npm:^9.1.0"
@@ -4438,7 +4463,7 @@ __metadata:
     ts-prune-2: "npm:^0.10.7"
   peerDependencies:
     typescript: ">= 5.0.0"
-  checksum: caa84b3d81df0afd52a07ff41012c87a136ce84aee3208e9fa8c93abb4011d66d1b1fc00690c602e4a2539bb19524c718c53db573c9eff5f527d908a269e9474
+  checksum: cd9ad2d1f8c9d1e73a7a54f46d2a4c0e8bc9b633a14855f0ccb7012e0a8210373cba1e587284992b0776a8e9ad1414061f67a3eb1027e860c0872e545810cb49
   languageName: node
   linkType: hard
 
@@ -5426,6 +5451,49 @@ __metadata:
     ncu: build/src/bin/cli.js
     npm-check-updates: build/src/bin/cli.js
   checksum: bbd2a43e84280d228a357d27a7016dcc8b60aa1361f75b59ad67a61b73a7156ee62be9d44bcaa41c24f65cb9cc436ea85169a0702399842b4f8e16bca1834565
+  languageName: node
+  linkType: hard
+
+"npm-check-updates@npm:^16.14.12":
+  version: 16.14.12
+  resolution: "npm-check-updates@npm:16.14.12"
+  dependencies:
+    chalk: "npm:^5.3.0"
+    cli-table3: "npm:^0.6.3"
+    commander: "npm:^10.0.1"
+    fast-memoize: "npm:^2.5.2"
+    find-up: "npm:5.0.0"
+    fp-and-or: "npm:^0.1.4"
+    get-stdin: "npm:^8.0.0"
+    globby: "npm:^11.0.4"
+    hosted-git-info: "npm:^5.1.0"
+    ini: "npm:^4.1.1"
+    js-yaml: "npm:^4.1.0"
+    json-parse-helpfulerror: "npm:^1.0.3"
+    jsonlines: "npm:^0.1.1"
+    lodash: "npm:^4.17.21"
+    make-fetch-happen: "npm:^11.1.1"
+    minimatch: "npm:^9.0.3"
+    p-map: "npm:^4.0.0"
+    pacote: "npm:15.2.0"
+    parse-github-url: "npm:^1.0.2"
+    progress: "npm:^2.0.3"
+    prompts-ncu: "npm:^3.0.0"
+    rc-config-loader: "npm:^4.1.3"
+    remote-git-tags: "npm:^3.0.0"
+    rimraf: "npm:^5.0.5"
+    semver: "npm:^7.5.4"
+    semver-utils: "npm:^1.1.4"
+    source-map-support: "npm:^0.5.21"
+    spawn-please: "npm:^2.0.2"
+    strip-ansi: "npm:^7.1.0"
+    strip-json-comments: "npm:^5.0.1"
+    untildify: "npm:^4.0.0"
+    update-notifier: "npm:^6.0.2"
+  bin:
+    ncu: build/src/bin/cli.js
+    npm-check-updates: build/src/bin/cli.js
+  checksum: b22660e1fb3bc7bceccd70bf2c20e8873441771c160762d066f71ce2d4f0a6ff58882b5c198be89e433301bdf4e5440b1f46c1cdf3e9d40137b2823b07d6b3d0
   languageName: node
   linkType: hard
 
