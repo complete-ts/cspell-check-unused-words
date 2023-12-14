@@ -10,8 +10,12 @@
   "compilerOptions": {
     "outDir": "dist",
 
+    // @template-customization-start
+
     // Needed to import from "package.json".
     "resolveJsonModule": true,
+
+    // @template-customization-end
   },
 
   // A list of the TypeScript files to compile.
