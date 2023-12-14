@@ -2396,7 +2396,7 @@ __metadata:
     chalk: "npm:^5.3.0"
     commander: "npm:^11.1.0"
     isaacscript: "npm:^3.33.0"
-    isaacscript-common-node: "npm:^1.5.0"
+    isaacscript-common-node: "npm:^1.6.1"
     isaacscript-common-ts: "npm:^13.1.0"
     isaacscript-lint: "npm:^6.12.0"
     isaacscript-tsconfig: "npm:^5.0.0"
@@ -4396,9 +4396,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common-node@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "isaacscript-common-node@npm:1.5.0"
+"isaacscript-common-node@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "isaacscript-common-node@npm:1.6.1"
   dependencies:
     "@arktype/fs": "npm:^0.0.8"
     chalk: "npm:^5.3.0"
@@ -4410,7 +4410,7 @@ __metadata:
     jsonc-parser: "npm:^3.2.0"
     npm-check-updates: "npm:^16.14.12"
     zod: "npm:^3.22.4"
-  checksum: aaac7e63135bd494c313c1f14509a4fe21223131f7c5b86e6f0f8cbdc422271b5ca814f9975e838eb80f90470463f0c035e33771427fce320d20eb13927d3bfe
+  checksum: 0e029da4f4ad3487a6364070b35ec934dd2f516e570a403478ec239117601b7a73b6eb514da2294b11db3694fc2c46f4ca2a1602bf77759853a8dd727074ed22
   languageName: node
   linkType: hard
 

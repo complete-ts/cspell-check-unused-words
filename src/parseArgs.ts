@@ -1,15 +1,16 @@
 import { Command } from "@commander-js/extra-typings";
 import {
-  dirName,
-  getPackageJSON,
-  getPackageJSONFieldMandatory,
+  findPackageRoot,
+  getPackageJSONFieldsMandatory,
 } from "isaacscript-common-node";
 
-const __dirname = dirName();
-const packageJSON = getPackageJSON(__dirname);
-const name = getPackageJSONFieldMandatory(packageJSON, "name");
-const version = getPackageJSONFieldMandatory(packageJSON, "version");
-const description = getPackageJSONFieldMandatory(packageJSON, "description");
+const packageRoot = findPackageRoot();
+const { name, version, description } = getPackageJSONFieldsMandatory(
+  packageRoot,
+  "name",
+  "version",
+  "description",
+);
 
 export const program = new Command()
   .name(name)

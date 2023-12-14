@@ -189,10 +189,12 @@ export function checkUnusedWords(options: Options): void {
     }
   }
 
-  if (oneOrMoreFailures) {
-    console.log("There were one or more unused words.");
-  } else {
-    console.log("Success! There were no unused words.");
+  if (verbose) {
+    if (oneOrMoreFailures) {
+      console.log("There were one or more unused words.");
+    } else {
+      console.log("Success! There were no unused words.");
+    }
   }
 
   const exitCode = oneOrMoreFailures ? 1 : 0;
