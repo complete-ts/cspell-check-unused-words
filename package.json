@@ -31,19 +31,19 @@
     "update": "isaacscript update"
   },
   "dependencies": {
+    "@commander-js/extra-typings": "^11.1.0",
     "chalk": "^5.3.0",
+    "commander": "^11.1.0",
     "isaacscript-common-node": "^1.4.0",
-    "isaacscript-common-ts": "^11.6.0",
-    "source-map-support": "^0.5.21"
+    "isaacscript-common-ts": "^13.1.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@types/source-map-support": "^0.5.10",
-    "isaacscript": "^3.25.0",
-    "isaacscript-lint": "^6.4.1",
+    "@types/node": "^20.10.4",
+    "isaacscript": "^3.33.0",
+    "isaacscript-lint": "^6.11.1",
     "isaacscript-tsconfig": "^5.0.0",
-    "tsx": "^4.6.0",
-    "typescript": "^5.3.2"
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3"
   },
   "packageManager": "yarn@4.0.2"
 }

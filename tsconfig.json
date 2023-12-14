@@ -9,6 +9,9 @@
   // https://www.typescriptlang.org/docs/handbook/compiler-options.html
   "compilerOptions": {
     "outDir": "dist",
+
+    // Needed to import from "package.json".
+    "resolveJsonModule": true,
   },
 
   // A list of the TypeScript files to compile.
