@@ -1,13 +1,5 @@
 import chalk from "chalk";
-import {
-  $op,
-  deleteFileOrDirectory,
-  fatalError,
-  getJSONC,
-  isFile,
-  writeFile,
-} from "isaacscript-common-node";
-import { trimSuffix } from "isaacscript-common-ts";
+import { $ } from "execa";
 import path from "node:path";
 import {
   CSPELL_CONFIG_NAMES,
@@ -15,6 +7,14 @@ import {
   CSPELL_TEMP_CONFIG_PATH,
   CWD,
 } from "./constants.js";
+import {
+  deleteFileOrDirectory,
+  fatalError,
+  getJSONC,
+  isFile,
+  trimSuffix,
+  writeFile,
+} from "./isaacScriptCommon.js";
 import type { Options } from "./parseArgs.js";
 
 export function checkUnusedWords(options: Options): void {
@@ -140,7 +140,7 @@ export function checkUnusedWords(options: Options): void {
   }
 
   // Run CSpell without any of the ignored words.
-  const $$ = $op({ reject: false }); // CSpell is expected to return a non-zero exit code.
+  const $$ = $({ reject: false }); // CSpell is expected to return a non-zero exit code.
   const { stdout } =
     $$.sync`cspell --no-progress --no-summary --unique --words-only --config ${CSPELL_TEMP_CONFIG_PATH}`;
 

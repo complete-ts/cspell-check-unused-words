@@ -21,10 +21,10 @@
     "yarn.lock",
   ],
   "words": [
-    "autocrlf",
     "corepack",
     "dbaeumer",
     "esbenp",
+    "execa",
     "isaacscript",
     "knip",
     "packagejson",
