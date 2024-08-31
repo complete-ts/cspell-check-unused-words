@@ -26,7 +26,7 @@
   "scripts": {
     "build": "tsx ./scripts/build.ts",
     "lint": "tsx ./scripts/lint.ts",
-    "publish": "isaacscript publish-ts",
+    "publish": "isaacscript publish",
     "start": "tsx ./src/main.ts",
     "update": "isaacscript update"
   },
