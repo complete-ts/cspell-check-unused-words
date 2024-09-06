@@ -29,6 +29,8 @@ export const CSPELL_JSON_CONFIG_NAMES = [
  * clean status of the repository to indicate success. Thus, we arbitrary choose a config file name
  * that is present in most ".gitignore" files.
  *
+ * Note that the arbitrary file name must end in ".json", or else invoking CSpell will fail.
+ *
  * @see https://github.com/github/gitignore/blob/main/Node.gitignore
  */
 export const CSPELL_TEMP_CONFIG_NAME = "npm-debug.log.cspell.config.json";
