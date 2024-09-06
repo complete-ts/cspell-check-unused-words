@@ -5,8 +5,6 @@ import {
   deleteFileOrDirectory,
   fatalError,
   getJSONC,
-  getStringArrayFromObject,
-  getYAML,
   isFile,
   trimSuffix,
   writeFile,
@@ -18,6 +16,7 @@ import {
   CWD,
 } from "./constants.js";
 import type { Options } from "./parseArgs.js";
+import { getStringArrayFromObject, getYAML } from "./utils.js";
 
 /**
  * We check for unused words by creating a temporary CSpell configuration file.

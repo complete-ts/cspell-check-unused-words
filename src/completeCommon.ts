@@ -7,7 +7,6 @@
 import JSONC from "jsonc-parser";
 import fs from "node:fs";
 import path from "node:path";
-import YAML from "yaml";
 
 export type ReadonlyRecord<K extends string | number | symbol, V> = Readonly<
   Record<K, V>
@@ -216,58 +215,6 @@ export function getPackageJSONFieldsMandatory<T extends string>(
   return fields as Record<T, string>;
 }
 
-export function getStringArrayFromObject(
-  arrayName: string,
-  object: ReadonlyRecord<string, unknown>,
-  filePath: string,
-): readonly string[] | undefined {
-  const array = object[arrayName];
-
-  if (array === undefined) {
-    return undefined;
-  }
-
-  if (!Array.isArray(array)) {
-    fatalError(
-      `Failed to parse the "${arrayName}" property in the "${filePath}" file, since it was not an array.`,
-    );
-  }
-
-  for (const element of array) {
-    if (typeof element !== "string") {
-      fatalError(
-        `Failed to parse the "${arrayName}" array in the "${filePath}" file, since one of the entires was of type: ${typeof element}`,
-      );
-    }
-  }
-
-  return array as string[];
-}
-
-/**
- * Helper function to parse a file as YAML.
- *
- * This will print an error message and exit the program if any errors occur.
- */
-export function getYAML(filePath: string): Record<string, unknown> {
-  const fileContents = readFile(filePath);
-
-  let yaml: unknown;
-  try {
-    yaml = YAML.parse(fileContents);
-  } catch (error) {
-    throw new Error(`Failed to parse "${filePath}" as YAML: ${error}`);
-  }
-
-  if (!isObject(yaml)) {
-    throw new Error(
-      `Failed to parse "${filePath}" as YAML, since the contents were not an object.`,
-    );
-  }
-
-  return yaml;
-}
-
 /** Helper function to synchronously check if the provided path exists and is a directory. */
 function isDirectory(filePath: string): boolean {
   return fs.existsSync(filePath) && fs.statSync(filePath).isDirectory();
@@ -284,7 +231,9 @@ export function isFile(filePath: string): boolean {
  * Under the hood, this checks for `typeof variable === "object"`, `variable !== null`, and
  * `!Array.isArray(variable)`.
  */
-function isObject(variable: unknown): variable is Record<string, unknown> {
+export function isObject(
+  variable: unknown,
+): variable is Record<string, unknown> {
   return (
     typeof variable === "object" &&
     variable !== null &&
@@ -299,7 +248,7 @@ function isObject(variable: unknown): variable is Record<string, unknown> {
  *
  * This will throw an error if the file cannot be read.
  */
-function readFile(filePath: string): string {
+export function readFile(filePath: string): string {
   let fileContents: string;
 
   try {
