@@ -31,6 +31,6 @@ export const CSPELL_JSON_CONFIG_NAMES = [
  *
  * @see https://github.com/github/gitignore/blob/main/Node.gitignore
  */
-export const CSPELL_TEMP_CONFIG_NAME = "cspell.config.log";
+export const CSPELL_TEMP_CONFIG_NAME = "npm-debug.log.cspell.config.json";
 
 export const CSPELL_TEMP_CONFIG_PATH = path.join(CWD, CSPELL_TEMP_CONFIG_NAME);
