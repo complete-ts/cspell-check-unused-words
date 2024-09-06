@@ -2,19 +2,21 @@ import chalk from "chalk";
 import { $ } from "execa";
 import path from "node:path";
 import {
-  CSPELL_CONFIG_NAMES,
+  deleteFileOrDirectory,
+  fatalError,
+  getJSONC,
+  getStringArrayFromObject,
+  getYAML,
+  isFile,
+  trimSuffix,
+  writeFile,
+} from "./completeCommon.js";
+import {
+  CSPELL_JSON_CONFIG_NAMES,
   CSPELL_TEMP_CONFIG_NAME,
   CSPELL_TEMP_CONFIG_PATH,
   CWD,
 } from "./constants.js";
-import {
-  deleteFileOrDirectory,
-  fatalError,
-  getJSONC,
-  isFile,
-  trimSuffix,
-  writeFile,
-} from "./isaacScriptCommon.js";
 import type { Options } from "./parseArgs.js";
 
 /**
@@ -31,10 +33,19 @@ export function checkUnusedWords(options: Options): void {
   }
 
   const cSpellConfigPath = getCSpellConfigPath();
-  const cSpellConfig = getJSONC(cSpellConfigPath);
-  const { words } = cSpellConfig;
+  if (cSpellConfigPath === undefined) {
+    fatalError(
+      `Failed to find your CSpell configuration file in the current working directory: ${CWD}`,
+    );
+  }
 
-  // Do nothing if they do not have a "words" array inside of the config.
+  const cSpellConfig = getCSpellConfig(cSpellConfigPath);
+  const words = getStringArrayFromObject(
+    "words",
+    cSpellConfig,
+    cSpellConfigPath,
+  );
+
   if (words === undefined) {
     if (verbose) {
       console.log(
@@ -45,13 +56,6 @@ export function checkUnusedWords(options: Options): void {
     return;
   }
 
-  if (!Array.isArray(words)) {
-    fatalError(
-      `Failed to parse the "words" property in the "${cSpellConfigPath}" file, since it was not an array.`,
-    );
-  }
-
-  // Do nothing if the "words" array is empty.
   if (words.length === 0) {
     if (verbose) {
       console.log(
@@ -62,15 +66,6 @@ export function checkUnusedWords(options: Options): void {
     return;
   }
 
-  for (const word of words) {
-    if (typeof word !== "string") {
-      fatalError(
-        `Failed to parse the "words" array in the "${cSpellConfigPath}" file, since one of the entires was of type: ${typeof word}`,
-      );
-    }
-  }
-
-  const wordsStrings = words as string[];
   if (verbose) {
     console.log(
       `Found the following ${words.length} words in the config:`,
@@ -78,26 +73,17 @@ export function checkUnusedWords(options: Options): void {
     );
   }
 
-  const lowercaseWords = wordsStrings.map((word) => word.toLowerCase());
+  const lowercaseWords = words.map((word) => word.toLowerCase());
 
   const cSpellConfigName = path.basename(cSpellConfigPath);
   const ignorePaths = [cSpellConfigName, CSPELL_TEMP_CONFIG_NAME];
-  const existingIgnorePaths = cSpellConfig["ignorePaths"];
+
+  const existingIgnorePaths = getStringArrayFromObject(
+    "ignorePaths",
+    cSpellConfig,
+    cSpellConfigPath,
+  );
   if (existingIgnorePaths !== undefined) {
-    if (!Array.isArray(existingIgnorePaths)) {
-      fatalError(
-        `Failed to parse the "ignorePaths" property in the "${cSpellConfigPath}" file, since it was not an array.`,
-      );
-    }
-
-    for (const ignorePath of existingIgnorePaths) {
-      if (typeof ignorePath !== "string") {
-        fatalError(
-          `Failed to parse the "ignorePaths" array in the "${cSpellConfigPath}" file, since one of the entires was of type: ${typeof ignorePath}`,
-        );
-      }
-    }
-
     const validatedIgnorePaths = existingIgnorePaths as string[];
     ignorePaths.push(...validatedIgnorePaths);
   }
@@ -187,15 +173,30 @@ export function checkUnusedWords(options: Options): void {
   process.exit(exitCode);
 }
 
-function getCSpellConfigPath(): string {
-  for (const cSpellConfigName of CSPELL_CONFIG_NAMES) {
+function getCSpellConfigPath(): string | undefined {
+  for (const cSpellConfigName of CSPELL_JSON_CONFIG_NAMES) {
     const cSpellConfigPath = path.join(CWD, cSpellConfigName);
     if (isFile(cSpellConfigPath)) {
       return cSpellConfigPath;
     }
   }
 
-  fatalError(
-    `Failed to find your CSpell configuration file in the current working directory: ${CWD}`,
+  return undefined;
+}
+
+function getCSpellConfig(cSpellConfigPath: string) {
+  if (
+    cSpellConfigPath.endsWith(".json") ||
+    cSpellConfigPath.endsWith(".jsonc")
+  ) {
+    return getJSONC(cSpellConfigPath);
+  }
+
+  if (cSpellConfigPath.endsWith(".yml")) {
+    return getYAML(cSpellConfigPath);
+  }
+
+  throw new Error(
+    `Failed to parse the CSpell configuration format for the config file of: ${cSpellConfigPath}`,
   );
 }

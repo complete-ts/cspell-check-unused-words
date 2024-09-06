@@ -3,18 +3,18 @@ import * as path from "node:path";
 export const CWD = process.cwd();
 
 /** @see https://cspell.org/configuration/ */
-export const CSPELL_CONFIG_NAMES = [
+export const CSPELL_JSON_CONFIG_NAMES = [
   ".cspell.json",
   "cspell.json",
   ".cSpell.json",
   "cSpell.json",
-  /// "cspell.config.js", // We expect JSON to parse.
-  /// "cspell.config.cjs", // We expect JSON to parse.
+  "cspell.config.js",
+  "cspell.config.cjs",
   "cspell.config.json",
-  /// "cspell.config.yaml", // We expect JSON to parse.
-  /// "cspell.config.yml", // We expect JSON to parse.
-  /// "cspell.yaml", // We expect JSON to parse.
-  /// "cspell.yml", // We expect JSON to parse.
+  "cspell.config.yaml",
+  "cspell.config.yml",
+  "cspell.yaml",
+  "cspell.yml",
 
   // The documentation for CSpell does not include JSONC file extensions, but they are valid.
   ".cspell.jsonc",

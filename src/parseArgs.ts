@@ -1,6 +1,6 @@
 import { Command } from "@commander-js/extra-typings";
 import path from "node:path";
-import { getPackageJSONFieldsMandatory } from "./isaacScriptCommon.js";
+import { getPackageJSONFieldsMandatory } from "./completeCommon.js";
 
 const packageRoot = path.join(import.meta.dirname, "..");
 const { name, version, description } = getPackageJSONFieldsMandatory(
