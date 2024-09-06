@@ -24,5 +24,5 @@ export const CSPELL_CONFIG_NAMES = [
   "cspell.config.jsonc",
 ] as const;
 
-export const CSPELL_TEMP_CONFIG_NAME = "cspell.temp.jsonc";
+export const CSPELL_TEMP_CONFIG_NAME = "cspell.config.temp.jsonc";
 export const CSPELL_TEMP_CONFIG_PATH = path.join(CWD, CSPELL_TEMP_CONFIG_NAME);

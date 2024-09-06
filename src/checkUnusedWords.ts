@@ -17,6 +17,12 @@ import {
 } from "./isaacScriptCommon.js";
 import type { Options } from "./parseArgs.js";
 
+/**
+ * We check for unused words by creating a temporary CSpell configuration file.
+ *
+ * @see https://github.com/streetsidesoftware/cspell/issues/4750
+ * @see https://github.com/streetsidesoftware/cspell/issues/4836
+ */
 export function checkUnusedWords(options: Options): void {
   const { verbose } = options;
 
@@ -41,11 +47,7 @@ export function checkUnusedWords(options: Options): void {
 
   if (!Array.isArray(words)) {
     fatalError(
-      `Failed to parse the "${chalk.green(
-        "words",
-      )}" property in the "${chalk.green(
-        cSpellConfigPath,
-      )}" file, since it was not an array.`,
+      `Failed to parse the "words" property in the "${cSpellConfigPath}" file, since it was not an array.`,
     );
   }
 
@@ -63,13 +65,7 @@ export function checkUnusedWords(options: Options): void {
   for (const word of words) {
     if (typeof word !== "string") {
       fatalError(
-        `Failed to parse the "${chalk.green(
-          "words",
-        )}" array in the "${chalk.green(
-          cSpellConfigPath,
-        )}" file, since one of the entires was of type: ${chalk.green(
-          typeof word,
-        )}`,
+        `Failed to parse the "words" array in the "${cSpellConfigPath}" file, since one of the entires was of type: ${typeof word}`,
       );
     }
   }
@@ -90,24 +86,14 @@ export function checkUnusedWords(options: Options): void {
   if (existingIgnorePaths !== undefined) {
     if (!Array.isArray(existingIgnorePaths)) {
       fatalError(
-        `Failed to parse the "${chalk.green(
-          "ignorePaths",
-        )}" property in the "${chalk.green(
-          cSpellConfigPath,
-        )}" file, since it was not an array.`,
+        `Failed to parse the "ignorePaths" property in the "${cSpellConfigPath}" file, since it was not an array.`,
       );
     }
 
     for (const ignorePath of existingIgnorePaths) {
       if (typeof ignorePath !== "string") {
         fatalError(
-          `Failed to parse the "${chalk.green(
-            "ignorePaths",
-          )}" array in the "${chalk.green(
-            cSpellConfigPath,
-          )}" file, since one of the entires was of type: ${chalk.green(
-            typeof ignorePath,
-          )}`,
+          `Failed to parse the "ignorePaths" array in the "${cSpellConfigPath}" file, since one of the entires was of type: ${typeof ignorePath}`,
         );
       }
     }
@@ -210,8 +196,6 @@ function getCSpellConfigPath(): string {
   }
 
   fatalError(
-    `Failed to find your CSpell configuration file in the current working directory: ${chalk.green(
-      CWD,
-    )}`,
+    `Failed to find your CSpell configuration file in the current working directory: ${CWD}`,
   );
 }
