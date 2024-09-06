@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
-    "isaacscript": "^4.5.10",
+    "isaacscript": "^4.6.0",
     "isaacscript-common-node": "^4.1.1",
     "isaacscript-lint": "^6.20.0",
     "isaacscript-tsconfig": "^6.0.0",
