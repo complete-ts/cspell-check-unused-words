@@ -24,5 +24,13 @@ export const CSPELL_JSON_CONFIG_NAMES = [
   "cspell.config.jsonc",
 ] as const;
 
-export const CSPELL_TEMP_CONFIG_NAME = "cspell.config.temp.jsonc";
+/**
+ * We do not want the config file to be picked up by git, since various other linting checks use the
+ * clean status of the repository to indicate success. Thus, we arbitrary choose a config file name
+ * that is present in most ".gitignore" files.
+ *
+ * @see https://github.com/github/gitignore/blob/main/Node.gitignore
+ */
+export const CSPELL_TEMP_CONFIG_NAME = "cspell.config.log";
+
 export const CSPELL_TEMP_CONFIG_PATH = path.join(CWD, CSPELL_TEMP_CONFIG_NAME);
