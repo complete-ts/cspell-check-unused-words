@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "complete-lint": "^1.4.0",
-    "isaacscript": "^4.7.5",
+    "isaacscript": "^4.7.6",
     "typescript": "5.5.4"
   }
 }
