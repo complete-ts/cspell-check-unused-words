@@ -22,7 +22,6 @@
     "yarn.lock",
   ],
   "words": [
-    "corepack",
     "dbaeumer",
     "esbenp",
     "isaacscript",
