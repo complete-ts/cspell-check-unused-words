@@ -19,5 +19,6 @@ export const program = new Command()
   .allowExcessArguments(false) // By default, Commander.js will allow extra positional arguments.
   .option("-v, --verbose", "Enable verbose output.", false);
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const options = program.opts();
 export type Options = typeof options;

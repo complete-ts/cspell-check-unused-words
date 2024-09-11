@@ -22,12 +22,13 @@
     "yarn.lock",
   ],
   "words": [
-    "lockb",
     "corepack",
     "dbaeumer",
     "esbenp",
     "isaacscript",
+    "lockb",
     "sarisia",
+    "tseslint",
     "Zamiell",
   ],
 }
