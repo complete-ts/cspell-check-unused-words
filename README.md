@@ -31,4 +31,4 @@ Sometimes, these blue squiggly lines are false positives. When this is the case,
 
 Over time, the word ignore list in the "cspell.json" file will become quite large. But because of code changes, not all of the words may still serve a purpose. For example, the original code that caused a spelling error might have been removed or changed. In order to clean up your words, you need to check every word to see if it is still being used.
 
-This is where `cspell-check-unused-words` comes in. It will check every word in your configuration to ensure that it is still being used.
+`cspell-check-unused-words` does exactly this.
