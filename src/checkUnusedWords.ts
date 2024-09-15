@@ -113,7 +113,7 @@ export function checkUnusedWords(options: Options): void {
   // Run CSpell without any of the ignored words.
   const $$ = $({ reject: false }); // CSpell is expected to return a non-zero exit code.
   const { stdout } =
-    $$.sync`cspell --no-progress --no-summary --unique --words-only --config ${CSPELL_TEMP_CONFIG_PATH}`;
+    $$.sync`cspell --no-progress --no-summary --unique --words-only --config ${CSPELL_TEMP_CONFIG_PATH} .`;
 
   if (verbose) {
     console.log("The stdout of the CSpell command was as follows:");
