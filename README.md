@@ -6,6 +6,8 @@
 
 ## Install
 
+Type the following command while in the root of your project:
+
 ```sh
 npm install cspell-check-unused-words --save-dev
 ```
