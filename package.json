@@ -5,13 +5,13 @@
   "keywords": [
     "cspell"
   ],
-  "homepage": "https://github.com/Zamiell/cspell-check-unused-words",
+  "homepage": "https://github.com/complete-ts/cspell-check-unused-words",
   "bugs": {
-    "url": "https://github.com/Zamiell/cspell-check-unused-words/issues"
+    "url": "https://github.com/complete-ts/cspell-check-unused-words/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zamiell/cspell-check-unused-words.git"
+    "url": "git+https://github.com/complete-ts/cspell-check-unused-words.git"
   },
   "license": "MIT",
   "author": "Zamiell",
