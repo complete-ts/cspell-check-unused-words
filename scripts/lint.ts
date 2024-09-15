@@ -26,7 +26,8 @@ await lintScript(async () => {
     $`npm run start`,
 
     // Check for template updates.
-    $`isaacscript check-ts`,
+    // @template-ignore-next-line
+    $`isaacscript check-ts --ignore LICENSE`,
   ];
 
   await Promise.all(promises);
