@@ -1,5 +1,7 @@
+import os from "node:os";
 import path from "node:path";
 
+const TMP_PATH = os.tmpdir();
 export const CWD = process.cwd();
 
 /** @see https://cspell.org/configuration/ */
@@ -33,6 +35,9 @@ export const CSPELL_JSON_CONFIG_NAMES = [
  *
  * @see https://github.com/github/gitignore/blob/main/Node.gitignore
  */
-export const CSPELL_TEMP_CONFIG_NAME = "npm-debug.log.cspell.config.json";
+export const CSPELL_TEMP_CONFIG_NAME = "cspell.config.json";
 
-export const CSPELL_TEMP_CONFIG_PATH = path.join(CWD, CSPELL_TEMP_CONFIG_NAME);
+export const CSPELL_TEMP_CONFIG_PATH = path.join(
+  TMP_PATH,
+  CSPELL_TEMP_CONFIG_NAME,
+);
