@@ -28,6 +28,7 @@
     "lint": "tsx ./scripts/lint.ts",
     "publish": "isaacscript publish",
     "start": "tsx ./src/main.ts",
+    "test": "tsx ./scripts/test.ts",
     "update": "isaacscript update"
   },
   "dependencies": {
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "complete-lint": "^1.9.2",
+    "complete-node": "^1.5.1",
     "isaacscript": "^5.0.6",
     "typescript": "5.5.4"
   }

@@ -17,7 +17,8 @@ export const program = new Command()
   .helpOption("-h, --help", "Display the list of commands and options.")
   .helpCommand(false)
   .allowExcessArguments(false) // By default, Commander.js will allow extra positional arguments.
-  .option("-v, --verbose", "Enable verbose output.", false);
+  .option("-v, --verbose", "Enable verbose output.", false)
+  .option("-s, --simple", "Enable simple output.", false);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const options = program.opts();

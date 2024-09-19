@@ -160,12 +160,17 @@ export function checkUnusedWords(options: Options): void {
 
   for (const word of lowercaseWords) {
     if (!misspelledWordsSet.has(word)) {
-      console.log(
-        `The following word in the CSpell config is not being used: ${chalk.green(
-          word,
-        )}`,
-      );
       oneOrMoreFailures = true;
+
+      if (options.simple) {
+        console.log(word);
+      } else {
+        console.log(
+          `The following word in the CSpell config is not being used: ${chalk.green(
+            word,
+          )}`,
+        );
+      }
     }
   }
 
