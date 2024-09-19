@@ -12,7 +12,6 @@ import {
 import {
   CSPELL_JSON_CONFIG_NAMES,
   CSPELL_TEMP_CONFIG_NAME,
-  CSPELL_TEMP_CONFIG_PATH,
   CWD,
 } from "./constants.js";
 import type { Options } from "./parseArgs.js";
@@ -103,11 +102,12 @@ export function checkUnusedWords(options: Options): void {
     noConfigSearch: true,
   };
 
+  const tempConfigPath = path.join(CWD, CSPELL_TEMP_CONFIG_NAME);
   const newCSpellConfigString = JSON.stringify(newCSpellConfig);
-  writeFile(CSPELL_TEMP_CONFIG_PATH, newCSpellConfigString);
+  writeFile(tempConfigPath, newCSpellConfigString);
 
   if (verbose) {
-    console.log(`Wrote temporary config file to "${CSPELL_TEMP_CONFIG_PATH}":`);
+    console.log(`Wrote temporary config file to "${tempConfigPath}":`);
     console.log(newCSpellConfigString);
     console.log();
   }
@@ -115,7 +115,7 @@ export function checkUnusedWords(options: Options): void {
   // Run CSpell without any of the ignored words.
   const $$ = $({ reject: false }); // CSpell is expected to return a non-zero exit code.
   const { stdout } =
-    $$.sync`cspell --no-progress --no-summary --unique --words-only --config ${CSPELL_TEMP_CONFIG_PATH} .`;
+    $$.sync`cspell --no-progress --no-summary --unique --words-only --config ${tempConfigPath} .`;
 
   if (verbose) {
     console.log("The stdout of the CSpell command was as follows:");
@@ -153,7 +153,7 @@ export function checkUnusedWords(options: Options): void {
   }
 
   // Delete the temporary configuration.
-  deleteFileOrDirectory(CSPELL_TEMP_CONFIG_PATH);
+  deleteFileOrDirectory(tempConfigPath);
 
   // Check that each ignored word in the configuration file is actually being used.
   let oneOrMoreFailures = false;
