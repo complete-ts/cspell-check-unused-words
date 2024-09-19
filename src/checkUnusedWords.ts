@@ -66,10 +66,11 @@ export function checkUnusedWords(options: Options): void {
   }
 
   if (verbose) {
-    console.log(
-      `Found the following ${words.length} words in the config:`,
-      words,
-    );
+    console.log(`Found the following ${words.length} words in the config:`);
+    for (const [i, word] of words.entries()) {
+      console.log(`${i + 1}) ${word}`);
+    }
+    console.log();
   }
 
   const lowercaseWords = words.map((word) => word.toLowerCase());
@@ -108,6 +109,7 @@ export function checkUnusedWords(options: Options): void {
   if (verbose) {
     console.log(`Wrote temporary config file to "${CSPELL_TEMP_CONFIG_PATH}":`);
     console.log(newCSpellConfigString);
+    console.log();
   }
 
   // Run CSpell without any of the ignored words.
@@ -118,6 +120,7 @@ export function checkUnusedWords(options: Options): void {
   if (verbose) {
     console.log("The stdout of the CSpell command was as follows:");
     console.log(stdout);
+    console.log();
   }
 
   const misspelledWords = stdout.split("\n");
@@ -140,7 +143,13 @@ export function checkUnusedWords(options: Options): void {
   const misspelledWordsSet = new Set(misspelledWordsWithoutSuffix);
 
   if (verbose) {
-    console.log("Using a misspelled words set of:", misspelledWordsSet);
+    console.log(
+      `Using a misspelled words set of ${misspelledWordsSet.size} entries:`,
+    );
+    for (const word of misspelledWordsSet) {
+      console.log(`- ${word}`);
+    }
+    console.log();
   }
 
   // Delete the temporary configuration.
