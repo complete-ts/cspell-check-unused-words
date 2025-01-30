@@ -21,7 +21,7 @@ npx cspell-check-unused-words
 ```
 
 - It will return 0 if all of the words are currently being used.
-- It will return 1 if there are one or more words that are unused. It will also list the unused words in the standard output.)
+- It will return 1 if there are one or more words that are unused. (It will also list the unused words in the standard output.)
 
 ## More Info
 
