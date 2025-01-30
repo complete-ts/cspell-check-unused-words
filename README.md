@@ -27,7 +27,7 @@ npx cspell-check-unused-words
 
 [CSpell](https://cspell.org/) is a fantastic tool that allows you to spell check your code. When using the [CSpell VSCode extension](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker), a blue squiggly line will appear underneath words that are misspelled.
 
-Sometimes, these blue squiggly lines are false positives. When this is the case, you can right-click on the word and select "Spelling" --> "Add Words to CSpell Configuration". Doing this will automatically insert a new entry in the "cspell.json" file.
+Sometimes, these blue squiggly lines are false positives. When this is the case, you can right-click on the word and select "Spelling" --> "Add Words to CSpell Configuration". Doing this will automatically insert a new entry in your CSpell configuration file (which is usually something like "cspell.json").
 
 Over time, the word ignore list in the "cspell.json" file will become quite large. But because of code changes, not all of the words may still serve a purpose. For example, the original code that caused a spelling error might have been removed or changed. In order to clean up your words, you need to check every word to see if it is still being used.
 
