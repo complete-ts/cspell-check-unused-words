@@ -35,14 +35,16 @@
     "@commander-js/extra-typings": "^13.1.0",
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
-    "execa": "^9.5.2",
-    "jsonc-parser": "^3.3.1",
-    "yaml": "^2.7.0"
+    "cspell-lib": "^8.17.3",
+    "execa": "^9.5.2"
   },
   "devDependencies": {
     "complete-lint": "^1.12.2",
     "complete-node": "^1.7.4",
     "isaacscript": "^5.2.4",
     "typescript": "5.5.4"
+  },
+  "peerDependencies": {
+    "cspell": "^8.15.2"
   }
 }
