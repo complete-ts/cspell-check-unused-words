@@ -1,14 +1,8 @@
 import chalk from "chalk";
+import { lint } from "cspell";
 import { getDefaultConfigLoader } from "cspell-lib";
-import { $ } from "execa";
-import path from "node:path";
-import {
-  deleteFileOrDirectory,
-  fatalError,
-  trimSuffix,
-  writeFile,
-} from "./completeCommon.js";
-import { CSPELL_TEMP_CONFIG_NAME, CWD } from "./constants.js";
+import { fatalError, trimSuffix } from "./completeCommon.js";
+import { CWD } from "./constants.js";
 import type { Options } from "./parseArgs.js";
 
 export async function checkUnusedWords(options: Options): Promise<void> {
@@ -59,51 +53,51 @@ export async function checkUnusedWords(options: Options): Promise<void> {
     console.log();
   }
 
-  const lowercaseWords = cSpellConfig.words.map((word) => word.toLowerCase());
+  const lowercaseWords = new Set(
+    cSpellConfig.words.map((word) => word.toLowerCase()),
+  );
 
-  const cSpellConfigName = path.basename(cSpellConfigUrl.pathname);
+  // Clear the custom words from the configuration.
+  cSpellConfig.words = undefined;
 
-  const newCSpellConfig = {
-    ...cSpellConfig,
-
-    // We want to ignore the CSpell configuration file itself and the temporary file.
-    ignorePaths: [
-      ...(cSpellConfig.ignorePaths ?? []),
-      cSpellConfigName,
-      CSPELL_TEMP_CONFIG_NAME,
-    ],
-
-    // Delete all of the ignored words from the existing config. (Otherwise, the upcoming CSpell
-    // command won't work properly.)
-    words: undefined,
-
-    // We have to add the "noConfigSearch" option:
-    // https://github.com/streetsidesoftware/cspell/issues/4750
-    noConfigSearch: true,
-  };
-
-  const tempConfigPath = path.join(CWD, CSPELL_TEMP_CONFIG_NAME);
-  const newCSpellConfigString = JSON.stringify(newCSpellConfig);
-  writeFile(tempConfigPath, newCSpellConfigString);
+  const misspelledWords: string[] = [];
+  await lint(
+    ["."],
+    {
+      config: {
+        settings: cSpellConfig,
+        url: cSpellConfigUrl,
+      },
+      progress: false,
+      summary: true,
+      unique: true,
+      wordsOnly: true,
+    },
+    {
+      issue(issue) {
+        // Ignore custom words in the config file. Using this approach instead of adding the config
+        // file path to `ignorePaths` since it's a better foundation for a future feature that would
+        // detect custom words elsewhere in the config file to prevent false positives. Doing this
+        // properly would require an AST of the config to detect the custom words region offset,
+        // which could be compared to the offset provided by the issue object...
+        if (
+          !(
+            issue.uri === cSpellConfigUrl.href &&
+            lowercaseWords.has(issue.text.toLowerCase())
+          )
+        ) {
+          misspelledWords.push(issue.text);
+        }
+      },
+    },
+  );
 
   if (verbose) {
-    console.log(`Wrote temporary config file to "${tempConfigPath}":`);
-    console.log(newCSpellConfigString);
+    console.log("CSpell found the following misspelled words:");
+    console.log(misspelledWords.join("\n"));
     console.log();
   }
 
-  // Run CSpell without any of the ignored words.
-  const $$ = $({ reject: false }); // CSpell is expected to return a non-zero exit code.
-  const { stdout } =
-    $$.sync`cspell --no-progress --no-summary --unique --words-only --config ${tempConfigPath} .`;
-
-  if (verbose) {
-    console.log("The stdout of the CSpell command was as follows:");
-    console.log(stdout);
-    console.log();
-  }
-
-  const misspelledWords = stdout.split("\n");
   const misspelledLowercaseWords = misspelledWords.map((word) =>
     word.toLowerCase(),
   );
@@ -131,9 +125,6 @@ export async function checkUnusedWords(options: Options): Promise<void> {
     }
     console.log();
   }
-
-  // Delete the temporary configuration.
-  deleteFileOrDirectory(tempConfigPath);
 
   // Check that each ignored word in the configuration file is actually being used.
   let oneOrMoreFailures = false;

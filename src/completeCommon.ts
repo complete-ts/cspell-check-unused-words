@@ -14,31 +14,6 @@ type ReadonlyRecord<K extends string | number | symbol, V> = Readonly<
 const PACKAGE_JSON = "package.json";
 
 /**
- * Helper function to synchronously delete a file or directory. If a path to a directory is
- * specified, the directory will be recursively deleted. If the path does not exist, this function
- * will be a no-op.
- *
- * This will throw an error if the file cannot be deleted.
- *
- * This function is variadic, meaning that you can pass as many file paths as you want to delete.
- */
-export function deleteFileOrDirectory(...filePaths: readonly string[]): void {
-  for (const filePath of filePaths) {
-    try {
-      if (fs.existsSync(filePath)) {
-        fs.rmSync(filePath, {
-          recursive: true,
-        });
-      }
-    } catch (error) {
-      throw new Error(
-        `Failed to delete file or directory "${filePath}": ${error}`,
-      );
-    }
-  }
-}
-
-/**
  * Helper function to print out an error message and then exit the program.
  *
  * All of the arguments will be passed to the `console.error` function.
@@ -234,23 +209,5 @@ function readFile(filePath: string): string {
 
 /** Helper function to trim a suffix from a string, if it exists. Returns the trimmed string. */
 export function trimSuffix(string: string, prefix: string): string {
-  if (!string.endsWith(prefix)) {
-    return string;
-  }
-
-  const endCharacter = string.length - prefix.length;
-  return string.slice(0, endCharacter);
-}
-
-/**
- * Helper function to synchronously write data to a file.
- *
- * This will throw an error if the file cannot be written to.
- */
-export function writeFile(filePath: string, data: string): void {
-  try {
-    fs.writeFileSync(filePath, data);
-  } catch (error) {
-    throw new Error(`Failed to write to the "${filePath}" file: ${error}`);
-  }
+  return string.endsWith(prefix) ? string.slice(0, -prefix.length) : string;
 }
