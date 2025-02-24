@@ -4,40 +4,14 @@
 // "node_modules" directory of the monorepo, which causes scripts to use the compiled version of the
 // library instead of the one specified in the tsconfig paths.
 
-import JSONC from "jsonc-parser";
 import fs from "node:fs";
 import path from "node:path";
 
-export type ReadonlyRecord<K extends string | number | symbol, V> = Readonly<
+type ReadonlyRecord<K extends string | number | symbol, V> = Readonly<
   Record<K, V>
 >;
 
 const PACKAGE_JSON = "package.json";
-
-/**
- * Helper function to synchronously delete a file or directory. If a path to a directory is
- * specified, the directory will be recursively deleted. If the path does not exist, this function
- * will be a no-op.
- *
- * This will throw an error if the file cannot be deleted.
- *
- * This function is variadic, meaning that you can pass as many file paths as you want to delete.
- */
-export function deleteFileOrDirectory(...filePaths: readonly string[]): void {
-  for (const filePath of filePaths) {
-    try {
-      if (fs.existsSync(filePath)) {
-        fs.rmSync(filePath, {
-          recursive: true,
-        });
-      }
-    } catch (error) {
-      throw new Error(
-        `Failed to delete file or directory "${filePath}": ${error}`,
-      );
-    }
-  }
-}
 
 /**
  * Helper function to print out an error message and then exit the program.
@@ -85,31 +59,6 @@ function getFilePath(
   }
 
   return filePath;
-}
-
-/**
- * Helper function to parse a file as JSONC.
- *
- * This expects the file to contain an object (i.e. `{}`). This will print an error message and exit
- * the program if any errors occur.
- */
-export function getJSONC(filePath: string): Record<string, unknown> {
-  const fileContents = readFile(filePath);
-
-  let json: unknown;
-  try {
-    json = JSONC.parse(fileContents);
-  } catch (error) {
-    throw new Error(`Failed to parse "${filePath}" as JSONC: ${error}`);
-  }
-
-  if (!isObject(json)) {
-    throw new Error(
-      `Failed to parse "${filePath}" as JSONC, since the contents were not an object.`,
-    );
-  }
-
-  return json;
 }
 
 /**
@@ -221,7 +170,7 @@ function isDirectory(filePath: string): boolean {
 }
 
 /** Helper function to synchronously check if the provided path exists and is a file. */
-export function isFile(filePath: string): boolean {
+function isFile(filePath: string): boolean {
   return fs.existsSync(filePath) && fs.statSync(filePath).isFile();
 }
 
@@ -231,9 +180,7 @@ export function isFile(filePath: string): boolean {
  * Under the hood, this checks for `typeof variable === "object"`, `variable !== null`, and
  * `!Array.isArray(variable)`.
  */
-export function isObject(
-  variable: unknown,
-): variable is Record<string, unknown> {
+function isObject(variable: unknown): variable is Record<string, unknown> {
   return (
     typeof variable === "object" &&
     variable !== null &&
@@ -248,7 +195,7 @@ export function isObject(
  *
  * This will throw an error if the file cannot be read.
  */
-export function readFile(filePath: string): string {
+function readFile(filePath: string): string {
   let fileContents: string;
 
   try {
@@ -268,17 +215,4 @@ export function trimSuffix(string: string, prefix: string): string {
 
   const endCharacter = string.length - prefix.length;
   return string.slice(0, endCharacter);
-}
-
-/**
- * Helper function to synchronously write data to a file.
- *
- * This will throw an error if the file cannot be written to.
- */
-export function writeFile(filePath: string, data: string): void {
-  try {
-    fs.writeFileSync(filePath, data);
-  } catch (error) {
-    throw new Error(`Failed to write to the "${filePath}" file: ${error}`);
-  }
 }

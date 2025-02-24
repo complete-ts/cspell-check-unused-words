@@ -1,11 +1,11 @@
-import { $op, testScript } from "complete-node";
+import { $q, testScript } from "complete-node";
 import { ExecaError } from "execa";
 import path from "node:path";
 
 await testScript(async () => {
   const cwd = process.cwd();
   const testsPath = path.join(cwd, "tests");
-  const $$ = $op({ cwd: testsPath });
+  const $$ = $q({ cwd: testsPath });
   try {
     await $$`tsx ../src/main.ts --simple`;
   } catch (error) {

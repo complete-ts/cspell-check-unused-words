@@ -27,6 +27,6 @@ await lintScript(async () => {
 
     // Check for template updates.
     // @template-ignore-next-line
-    $`isaacscript check-ts --ignore LICENSE`,
+    $`complete-cli check --ignore LICENSE`,
   ]);
 });

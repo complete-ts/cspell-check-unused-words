@@ -26,23 +26,23 @@
   "scripts": {
     "build": "tsx ./scripts/build.ts",
     "lint": "tsx ./scripts/lint.ts",
-    "publish": "isaacscript publish",
+    "publish": "complete-cli publish",
     "start": "tsx ./src/main.ts",
     "test": "tsx ./scripts/test.ts",
-    "update": "isaacscript update"
+    "update": "complete-cli update"
   },
   "dependencies": {
-    "@commander-js/extra-typings": "^13.1.0",
-    "chalk": "^5.4.1",
-    "commander": "^13.1.0",
-    "execa": "^9.5.2",
-    "jsonc-parser": "^3.3.1",
-    "yaml": "^2.7.0"
+    "@commander-js/extra-typings": "13.1.0",
+    "chalk": "5.4.1",
+    "commander": "13.1.0",
+    "cspell": "8.17.5",
+    "cspell-lib": "8.17.5"
   },
   "devDependencies": {
-    "complete-lint": "^1.12.2",
-    "complete-node": "^1.7.4",
-    "isaacscript": "^5.2.4",
-    "typescript": "5.5.4"
+    "complete-cli": "1.0.9",
+    "complete-lint": "1.14.1",
+    "complete-node": "3.1.0",
+    "execa": "9.5.2",
+    "typescript": "5.7.3"
   }
 }
