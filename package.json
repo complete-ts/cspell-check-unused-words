@@ -26,10 +26,10 @@
   "scripts": {
     "build": "tsx ./scripts/build.ts",
     "lint": "tsx ./scripts/lint.ts",
-    "publish": "isaacscript publish",
+    "publish": "complete-cli publish",
     "start": "tsx ./src/main.ts",
     "test": "tsx ./scripts/test.ts",
-    "update": "isaacscript update"
+    "update": "complete-cli update"
   },
   "dependencies": {
     "@commander-js/extra-typings": "^13.1.0",
@@ -39,9 +39,10 @@
     "cspell-lib": "^8.15.2"
   },
   "devDependencies": {
+    "complete-cli": "^1.0.8",
     "complete-lint": "^1.12.2",
     "complete-node": "^1.7.4",
-    "isaacscript": "^5.2.4",
+    "execa": "^9.5.2",
     "typescript": "5.5.4"
   }
 }
