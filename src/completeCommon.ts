@@ -209,5 +209,10 @@ function readFile(filePath: string): string {
 
 /** Helper function to trim a suffix from a string, if it exists. Returns the trimmed string. */
 export function trimSuffix(string: string, prefix: string): string {
-  return string.endsWith(prefix) ? string.slice(0, -prefix.length) : string;
+  if (!string.endsWith(prefix)) {
+    return string;
+  }
+
+  const endCharacter = string.length - prefix.length;
+  return string.slice(0, endCharacter);
 }

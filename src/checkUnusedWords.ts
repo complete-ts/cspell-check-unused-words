@@ -2,7 +2,6 @@ import chalk from "chalk";
 import { lint } from "cspell";
 import { getDefaultConfigLoader } from "cspell-lib";
 import { fatalError, trimSuffix } from "./completeCommon.js";
-import { CWD } from "./constants.js";
 import type { Options } from "./parseArgs.js";
 
 export async function checkUnusedWords(options: Options): Promise<void> {
@@ -12,16 +11,17 @@ export async function checkUnusedWords(options: Options): Promise<void> {
     console.log("Checking for unused words in the CSpell configuration...");
   }
 
-  const cspellConfigFile =
-    await getDefaultConfigLoader().searchForConfigFile(CWD);
+  const configLoader = getDefaultConfigLoader();
+  const cwd = process.cwd();
+  const cspellConfigFile = await configLoader.searchForConfigFile(cwd);
 
   if (cspellConfigFile === undefined) {
     fatalError(
-      `Failed to find your CSpell configuration file in the current working directory: ${CWD}`,
+      `Failed to find your CSpell configuration file in the current working directory: ${cwd}`,
     );
   }
 
-  const { settings: cSpellConfig, url: cSpellConfigUrl } = cspellConfigFile;
+  const { settings: cSpellConfig, url: cSpellConfigURL } = cspellConfigFile;
 
   if (cSpellConfig.words === undefined) {
     if (verbose) {
@@ -53,9 +53,10 @@ export async function checkUnusedWords(options: Options): Promise<void> {
     console.log();
   }
 
-  const lowercaseWords = new Set(
-    cSpellConfig.words.map((word) => word.toLowerCase()),
+  const lowercaseWordsArray = cSpellConfig.words.map((word) =>
+    word.toLowerCase(),
   );
+  const lowercaseWordsSet = new Set(lowercaseWordsArray);
 
   // Clear the custom words from the configuration.
   cSpellConfig.words = undefined;
@@ -66,7 +67,7 @@ export async function checkUnusedWords(options: Options): Promise<void> {
     {
       config: {
         settings: cSpellConfig,
-        url: cSpellConfigUrl,
+        url: cSpellConfigURL,
       },
       progress: false,
       summary: true,
@@ -75,15 +76,15 @@ export async function checkUnusedWords(options: Options): Promise<void> {
     },
     {
       issue(issue) {
-        // Ignore custom words in the config file. Using this approach instead of adding the config
-        // file path to `ignorePaths` since it's a better foundation for a future feature that would
-        // detect custom words elsewhere in the config file to prevent false positives. Doing this
-        // properly would require an AST of the config to detect the custom words region offset,
-        // which could be compared to the offset provided by the issue object...
+        // Ignore custom words in the config file. We use this approach instead of adding the config
+        // file path to `ignorePaths` since it is a better foundation for a future feature that
+        // would detect custom words elsewhere in the config file to prevent false positives. Doing
+        // this properly would require an AST of the config to detect the custom words region
+        // offset, which could be compared to the offset provided by the issue object.
         if (
           !(
-            issue.uri === cSpellConfigUrl.href &&
-            lowercaseWords.has(issue.text.toLowerCase())
+            issue.uri === cSpellConfigURL.href &&
+            lowercaseWordsSet.has(issue.text.toLowerCase())
           )
         ) {
           misspelledWords.push(issue.text);
@@ -129,7 +130,7 @@ export async function checkUnusedWords(options: Options): Promise<void> {
   // Check that each ignored word in the configuration file is actually being used.
   let oneOrMoreFailures = false;
 
-  for (const word of lowercaseWords) {
+  for (const word of lowercaseWordsSet) {
     if (!misspelledWordsSet.has(word)) {
       oneOrMoreFailures = true;
 
