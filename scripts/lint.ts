@@ -26,7 +26,6 @@ await lintScript(async () => {
     $`npm run start`,
 
     // Check for template updates.
-    // @template-ignore-next-line
-    $`complete-cli check --ignore LICENSE`,
+    $`complete-cli check`,
   ]);
 });
