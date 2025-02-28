@@ -38,10 +38,10 @@
     "cspell-lib": "8.17.5"
   },
   "devDependencies": {
-    "complete-cli": "1.0.17",
+    "complete-cli": "1.0.18",
     "complete-lint": "1.14.2",
     "complete-node": "3.1.7",
     "execa": "9.5.2",
-    "typescript": "5.7.3"
+    "typescript": "5.8.2"
   }
 }
