@@ -83,8 +83,8 @@ export async function checkUnusedWords(options: Options): Promise<void> {
         // offset, which could be compared to the offset provided by the issue object.
         if (
           !(
-            issue.uri === cSpellConfigURL.href &&
-            lowercaseWordsSet.has(issue.text.toLowerCase())
+            issue.uri === cSpellConfigURL.href
+            && lowercaseWordsSet.has(issue.text.toLowerCase())
           )
         ) {
           misspelledWords.push(issue.text);

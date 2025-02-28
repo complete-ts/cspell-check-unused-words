@@ -43,6 +43,6 @@
     "complete-lint": "1.14.2",
     "complete-node": "3.1.6",
     "execa": "9.5.2",
-    "typescript": "5.8.2"
+    "typescript": "5.7.3"
   }
 }

@@ -182,9 +182,9 @@ function isFile(filePath: string): boolean {
  */
 function isObject(variable: unknown): variable is Record<string, unknown> {
   return (
-    typeof variable === "object" &&
-    variable !== null &&
-    !Array.isArray(variable)
+    typeof variable === "object"
+    && variable !== null
+    && !Array.isArray(variable)
   );
 }
 
