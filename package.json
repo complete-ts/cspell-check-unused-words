@@ -38,9 +38,9 @@
     "cspell-lib": "8.17.5"
   },
   "devDependencies": {
-    "complete-cli": "1.0.18",
-    "complete-lint": "1.14.2",
-    "complete-node": "3.1.7",
+    "complete-cli": "1.0.29",
+    "complete-lint": "1.14.5",
+    "complete-node": "5.0.0",
     "execa": "9.5.2",
     "typescript": "5.7.3"
   }

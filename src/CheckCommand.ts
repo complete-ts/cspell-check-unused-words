@@ -2,9 +2,14 @@ import chalk from "chalk";
 import { Command, Option } from "clipanion";
 import { lint } from "cspell";
 import { getDefaultConfigLoader } from "cspell-lib";
-import { fatalError, trimSuffix } from "./completeCommon.js";
+import { fatalError, readFileAsync, trimSuffix } from "./completeCommon.js";
 
 export class CheckCommand extends Command {
+  fix = Option.Boolean("-f,--fix", false, {
+    description:
+      "Automatically remove any unused words from the CSpell configuration.",
+  });
+
   simple = Option.Boolean("-s,--simple", false, {
     description: "Only output the names of the words and nothing else.",
   });
@@ -35,6 +40,12 @@ export class CheckCommand extends Command {
     }
 
     const { settings: cSpellConfig, url: cSpellConfigURL } = cspellConfigFile;
+
+    if (this.verbose) {
+      console.log(
+        `Found a CSpell configuration file at: ${cSpellConfigURL.href}`,
+      );
+    }
 
     if (cSpellConfig.words === undefined) {
       if (this.verbose) {
@@ -141,11 +152,11 @@ export class CheckCommand extends Command {
     }
 
     // Check that each ignored word in the configuration file is actually being used.
-    let oneOrMoreFailures = false;
+    const unusedWords: string[] = [];
 
     for (const word of lowercaseWordsSet) {
       if (!misspelledWordsSet.has(word)) {
-        oneOrMoreFailures = true;
+        unusedWords.push(word);
 
         if (this.simple) {
           console.log(word);
@@ -160,14 +171,28 @@ export class CheckCommand extends Command {
     }
 
     if (this.verbose) {
-      if (oneOrMoreFailures) {
-        console.log("There were one or more unused words.");
-      } else {
+      if (unusedWords.length === 0) {
         console.log("Success! There were no unused words.");
+      } else {
+        console.log("There were one or more unused words.");
       }
     }
 
-    const exitCode = oneOrMoreFailures ? 1 : 0;
+    if (unusedWords.length > 0 && this.fix) {
+      // We do not want to overwrite the configuration file in case there are comments in it.
+      // Instead, we revert to manually removing the offending lines.
+      const configText = await readFileAsync(cSpellConfigURL.href);
+      if (configText.includes("\r\n")) {
+        fatalError(
+          `Your CSpell configuration file at "${cSpellConfigURL.href}" contains Windows-style newlines, which is not supported.`,
+        );
+      }
+      const lines = configText.split("\n");
+      for (const word of unusedWords) {
+      }
+    }
+
+    const exitCode = unusedWords.length === 0 ? 0 : 1;
     process.exit(exitCode);
   }
 }

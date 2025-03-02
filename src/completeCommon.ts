@@ -4,7 +4,7 @@
 // "node_modules" directory of the monorepo, which causes scripts to use the compiled version of the
 // library instead of the one specified in the tsconfig paths.
 
-import fs from "node:fs";
+import fsPromises from "node:fs/promises";
 import path from "node:path";
 
 type ReadonlyRecord<K extends string | number | symbol, V> = Readonly<
@@ -12,6 +12,24 @@ type ReadonlyRecord<K extends string | number | symbol, V> = Readonly<
 >;
 
 const PACKAGE_JSON = "package.json";
+
+/**
+ * Helper function to throw an error if the provided value is equal to `undefined`.
+ *
+ * This is useful to have TypeScript narrow a `T | undefined` value to `T` in a concise way.
+ */
+function assertDefined<T>(
+  value: T,
+  ...[msg]: [undefined] extends [T]
+    ? [string]
+    : [
+        "The assertion is useless because the provided value does not contain undefined.",
+      ]
+): asserts value is Exclude<T, undefined> {
+  if (value === undefined) {
+    throw new TypeError(msg);
+  }
+}
 
 /**
  * Helper function to print out an error message and then exit the program.
@@ -24,8 +42,8 @@ export function fatalError(...args: readonly unknown[]): never {
 }
 
 /**
- * Helper function to get the path to file, given either a file path, a directory path, or
- * `undefined`.
+ * Helper function to synchronously get the path to file, given either a file path, a directory
+ * path, or `undefined`.
  *
  * This will throw an error if the file cannot be found.
  *
@@ -34,46 +52,50 @@ export function fatalError(...args: readonly unknown[]): never {
  *                          file. If undefined is passed, the current working directory will be
  *                          used.
  */
-function getFilePath(
+export async function getFilePath(
   fileName: string,
   filePathOrDirPath: string | undefined,
-): string {
+): Promise<string> {
   if (filePathOrDirPath === undefined) {
     filePathOrDirPath = process.cwd(); // eslint-disable-line no-param-reassign
   }
 
-  let filePath: string;
-  if (isFile(filePathOrDirPath)) {
-    filePath = filePathOrDirPath;
-  } else if (isDirectory(filePathOrDirPath)) {
-    filePath = path.join(filePathOrDirPath, fileName);
-    if (!fs.existsSync(filePath)) {
-      throw new Error(
-        `Failed to find a "${fileName}" file at the following directory: ${filePathOrDirPath}`,
-      );
+  const file = await isFileAsync(filePathOrDirPath);
+  if (file) {
+    return filePathOrDirPath;
+  }
+
+  const directory = await isDirectoryAsync(filePathOrDirPath);
+  if (directory) {
+    const filePath = path.join(filePathOrDirPath, fileName);
+    const fileInDirectory = await isFileAsync(filePath);
+    if (fileInDirectory) {
+      return filePath;
     }
-  } else {
+
     throw new Error(
-      `Failed to find a "${fileName}" file at the following path: ${filePathOrDirPath}`,
+      `Failed to find a "${fileName}" file at the following directory: ${filePathOrDirPath}`,
     );
   }
 
-  return filePath;
+  throw new Error(
+    `Failed to find a "${fileName}" file at the following path: ${filePathOrDirPath}`,
+  );
 }
 
 /**
- * Helper function to get a "package.json" file as an object. This will print an error message and
- * exit the program if the "package.json" file cannot be found or is otherwise invalid.
+ * Helper function to asynchronously get a "package.json" file as an object. This will throw an
+ * error if the "package.json" file cannot be found or is otherwise invalid.
  *
  * @param filePathOrDirPath Either the path to a "package.json" file or the path to a directory
  *                          which contains a "package.json" file. If undefined is passed, the
  *                          current working directory will be used.
  */
-function getPackageJSON(
+async function getPackageJSON(
   filePathOrDirPath: string | undefined,
-): Record<string, unknown> {
-  const filePath = getFilePath(PACKAGE_JSON, filePathOrDirPath);
-  const packageJSONContents = readFile(filePath);
+): Promise<Record<string, unknown>> {
+  const filePath = await getFilePath(PACKAGE_JSON, filePathOrDirPath);
+  const packageJSONContents = await readFileAsync(filePath);
   const packageJSON = JSON.parse(packageJSONContents) as unknown;
   if (!isObject(packageJSON)) {
     throw new Error(
@@ -85,9 +107,9 @@ function getPackageJSON(
 }
 
 /**
- * Helper function to get an arbitrary string field from a "package.json" file. If the field does
- * not exist, `undefined` will be returned. This will print an error message and exit the program if
- * the "package.json" file cannot be found or is otherwise invalid.
+ * Helper function to asynchronously get an arbitrary string field from a "package.json" file. If
+ * the field does not exist, `undefined` will be returned. This will throw an error if the
+ * "package.json" file cannot be found or the field is not a string.
  *
  * @param filePathOrDirPathOrRecord Either the path to a "package.json" file, the path to a
  *                                 directory which contains a "package.json" file, or a parsed
@@ -95,17 +117,17 @@ function getPackageJSON(
  *                                 current working directory will be used.
  * @param fieldName The name of the field to retrieve.
  */
-function getPackageJSONField(
+async function getPackageJSONField(
   filePathOrDirPathOrRecord:
     | string
     | ReadonlyRecord<string, unknown>
     | undefined,
   fieldName: string,
-): string | undefined {
+): Promise<string | undefined> {
   const packageJSON =
     typeof filePathOrDirPathOrRecord === "object"
       ? filePathOrDirPathOrRecord
-      : getPackageJSON(filePathOrDirPathOrRecord);
+      : await getPackageJSON(filePathOrDirPathOrRecord);
 
   const field = packageJSON[fieldName];
   if (field === undefined) {
@@ -131,32 +153,32 @@ function getPackageJSONField(
 }
 
 /**
- * Helper function to get N arbitrary string fields from a "package.json" file. This will print an
- * error message and exit the program if any of the fields do not exist or if the "package.json"
- * file cannot be found.
- *
- * Also see the `getPackageJSONFieldMandatory` function.
+ * Helper function to asynchronously get N arbitrary string fields from a "package.json" file. This
+ * will throw an error if the "package.json" file cannot be found or any of the fields do not exist
+ * or any of the fields are not strings.
  *
  * @param filePathOrDirPath Either the path to a "package.json" file or the path to a directory
  *                          which contains a "package.json" file. If undefined is passed, the
  *                          current working directory will be used.
  * @param fieldNames The names of the fields to retrieve.
  */
-export function getPackageJSONFieldsMandatory<T extends string>(
+export async function getPackageJSONFieldsMandatory<T extends string>(
   filePathOrDirPath: string | undefined,
   ...fieldNames: readonly T[]
-): Record<T, string> {
-  const packageJSON = getPackageJSON(filePathOrDirPath);
+): Promise<Record<T, string>> {
+  const packageJSON = await getPackageJSON(filePathOrDirPath);
 
   const fields: Partial<Record<T, string>> = {};
 
   for (const fieldName of fieldNames) {
-    const field = getPackageJSONField(packageJSON, fieldName);
-    if (field === undefined) {
-      throw new Error(
-        `Failed to find the "${fieldName}" field in a "${PACKAGE_JSON}" file.`,
-      );
-    }
+    // Since we already have the contents of the "package.json" file, nothing asynchronous is
+    // actually happening in the `getPackageJSONField` function.
+    // eslint-disable-next-line no-await-in-loop
+    const field = await getPackageJSONField(packageJSON, fieldName);
+    assertDefined(
+      field,
+      `Failed to find the "${fieldName}" field in a "${PACKAGE_JSON}" file.`,
+    );
 
     fields[fieldName] = field;
   }
@@ -164,16 +186,25 @@ export function getPackageJSONFieldsMandatory<T extends string>(
   return fields as Record<T, string>;
 }
 
-/** Helper function to synchronously check if the provided path exists and is a directory. */
-function isDirectory(filePath: string): boolean {
-  return fs.existsSync(filePath) && fs.statSync(filePath).isDirectory();
+/** Helper function to asynchronously check if the provided path exists and is a directory. */
+async function isDirectoryAsync(filePath: string): Promise<boolean> {
+  try {
+    const stats = await fsPromises.stat(filePath);
+    return stats.isDirectory();
+  } catch {
+    return false;
+  }
 }
 
-/** Helper function to synchronously check if the provided path exists and is a file. */
-function isFile(filePath: string): boolean {
-  return fs.existsSync(filePath) && fs.statSync(filePath).isFile();
+/** Helper function to asynchronously check if the provided path exists and is a file. */
+async function isFileAsync(filePath: string): Promise<boolean> {
+  try {
+    const stats = await fsPromises.stat(filePath);
+    return stats.isFile();
+  } catch {
+    return false;
+  }
 }
-
 /**
  * Helper function to narrow an unknown value to an object (i.e. a TypeScript record).
  *
@@ -189,19 +220,19 @@ function isObject(variable: unknown): variable is Record<string, unknown> {
 }
 
 /**
- * Helper function to synchronously read a file.
+ * Helper function to asynchronously read a file.
  *
  * This assumes that the file is a text file and uses an encoding of "utf8".
  *
  * This will throw an error if the file cannot be read.
  */
-function readFile(filePath: string): string {
+export async function readFileAsync(filePath: string): Promise<string> {
   let fileContents: string;
 
   try {
-    fileContents = fs.readFileSync(filePath, "utf8");
+    fileContents = await fsPromises.readFile(filePath, "utf8");
   } catch (error) {
-    throw new Error(`Failed to read file "${filePath}": ${error}`);
+    throw new Error(`Failed to read text file "${filePath}": ${error}`);
   }
 
   return fileContents;
