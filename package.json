@@ -35,7 +35,8 @@
     "chalk": "5.4.1",
     "clipanion": "4.0.0-rc.4",
     "cspell": "8.17.5",
-    "cspell-lib": "8.17.5"
+    "cspell-lib": "8.17.5",
+    "prettier": "3.5.3"
   },
   "devDependencies": {
     "complete-cli": "1.0.29",

@@ -1,5 +1,5 @@
 import path from "node:path";
-import { getPackageJSONFieldsMandatory } from "./completeCommon.js";
+import { getPackageJSONFieldsMandatory } from "./completeNode.js";
 
 const packageRoot = path.join(import.meta.dirname, "..");
 const { name, version } = await getPackageJSONFieldsMandatory(

@@ -2,7 +2,15 @@ import chalk from "chalk";
 import { Command, Option } from "clipanion";
 import { lint } from "cspell";
 import { getDefaultConfigLoader } from "cspell-lib";
-import { fatalError, readFileAsync, trimSuffix } from "./completeCommon.js";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { assertDefined, trimSuffix } from "./completeCommon.js";
+import {
+  fatalError,
+  formatWithPrettier,
+  readFileAsync,
+  writeFileAsync,
+} from "./completeNode.js";
 
 export class CheckCommand extends Command {
   fix = Option.Boolean("-f,--fix", false, {
@@ -39,12 +47,11 @@ export class CheckCommand extends Command {
       );
     }
 
-    const { settings: cSpellConfig, url: cSpellConfigURL } = cspellConfigFile;
+    const { settings: cSpellConfig, url } = cspellConfigFile;
+    const configPath = fileURLToPath(url.href);
 
     if (this.verbose) {
-      console.log(
-        `Found a CSpell configuration file at: ${cSpellConfigURL.href}`,
-      );
+      console.log(`Found a CSpell configuration file at: ${configPath}`);
     }
 
     if (cSpellConfig.words === undefined) {
@@ -91,7 +98,7 @@ export class CheckCommand extends Command {
       {
         config: {
           settings: cSpellConfig,
-          url: cSpellConfigURL,
+          url,
         },
         progress: false,
         summary: true,
@@ -107,7 +114,7 @@ export class CheckCommand extends Command {
           // region offset, which could be compared to the offset provided by the issue object.
           if (
             !(
-              issue.uri === cSpellConfigURL.href
+              issue.uri === url.href
               && lowercaseWordsSet.has(issue.text.toLowerCase())
             )
           ) {
@@ -179,20 +186,133 @@ export class CheckCommand extends Command {
     }
 
     if (unusedWords.length > 0 && this.fix) {
-      // We do not want to overwrite the configuration file in case there are comments in it.
-      // Instead, we revert to manually removing the offending lines.
-      const configText = await readFileAsync(cSpellConfigURL.href);
-      if (configText.includes("\r\n")) {
-        fatalError(
-          `Your CSpell configuration file at "${cSpellConfigURL.href}" contains Windows-style newlines, which is not supported.`,
+      await autoFix(configPath, unusedWords, this.simple);
+    }
+
+    const exitCode = getExitCode(this.fix, unusedWords);
+    process.exit(exitCode);
+  }
+}
+
+/**
+ * Because configuration files can have comments (in JavaScript or JSONC), we do not want to
+ * overwrite the configuration file. Instead, we revert to manually removing the offending lines.
+ */
+async function autoFix(
+  configPath: string,
+  unusedWords: readonly string[],
+  simple: boolean,
+) {
+  const configText = await readFileAsync(configPath);
+  if (configText.includes("\r\n")) {
+    fatalError(
+      `Your CSpell configuration file at "${configPath}" contains Windows-style newlines, which is not supported.`,
+    );
+  }
+
+  // First, check to see if the words are on a single line.
+  const singleLineArrayRegex = /(["']words["']\s*:\s*\[)(.*?)(])/;
+  const singleLineMatch = configText.match(singleLineArrayRegex);
+
+  if (singleLineMatch) {
+    const [fullMatch, prefix, arrayContent, suffix] = singleLineMatch;
+
+    assertDefined(arrayContent, "Failed to parse the single line words array.");
+
+    const wordsArray = arrayContent
+      .split(",")
+      .map((item) => item.trim())
+      .filter((item) => {
+        const normalizedItem = item
+          .replaceAll(/^["']|["']$/g, "")
+          .toLowerCase();
+        return !unusedWords.some(
+          (word) => word.toLowerCase() === normalizedItem.toLowerCase(),
         );
-      }
-      const lines = configText.split("\n");
-      for (const word of unusedWords) {
+      });
+
+    const newArrayContent = wordsArray.join(", ");
+    const newConfigText = configText.replace(
+      fullMatch,
+      `${prefix}${newArrayContent}${suffix}`,
+    );
+
+    await overwriteConfig(configPath, newConfigText, unusedWords, simple);
+    return;
+  }
+
+  const lines = configText.split("\n");
+  const newLines: string[] = [];
+
+  const unusedWordsRegexes = unusedWords.map(
+    (word) => new RegExp(`^(\\s*["']${word}["']\\s*,?\\s*)$`, "i"),
+  );
+
+  let insideWordsArray = false;
+  let bracketDepth = 0;
+
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+
+    if (/["']words["']\s*:\s*\[/.test(trimmedLine)) {
+      insideWordsArray = true;
+      bracketDepth = 1;
+      newLines.push(line);
+      continue;
+    }
+
+    if (insideWordsArray) {
+      const openBrackets = (trimmedLine.match(/\[/g) ?? []).length;
+      const closeBrackets = (trimmedLine.match(/]/g) ?? []).length;
+      bracketDepth += openBrackets - closeBrackets;
+
+      if (bracketDepth <= 0) {
+        insideWordsArray = false;
       }
     }
 
-    const exitCode = unusedWords.length === 0 ? 0 : 1;
-    process.exit(exitCode);
+    if (insideWordsArray) {
+      const shouldSkip = unusedWordsRegexes.some((regex) =>
+        regex.test(trimmedLine),
+      );
+      if (shouldSkip) {
+        continue;
+      }
+    }
+
+    newLines.push(line);
   }
+
+  const newConfigText = newLines.join("\n");
+  await overwriteConfig(configPath, newConfigText, unusedWords, simple);
+}
+
+async function overwriteConfig(
+  configPath: string,
+  newConfigText: string,
+  unusedWords: readonly string[],
+  simple: boolean,
+) {
+  const repoRoot = path.dirname(configPath);
+  const formattedText = await formatWithPrettier(
+    newConfigText,
+    "json",
+    repoRoot,
+  );
+  await writeFileAsync(configPath, formattedText);
+
+  if (!simple) {
+    console.log(
+      "Removed the following words from the CSpell configuration:",
+      unusedWords,
+    );
+  }
+}
+
+function getExitCode(fix: boolean, unusedWords: readonly string[]) {
+  if (fix) {
+    return 0;
+  }
+
+  return unusedWords.length === 0 ? 0 : 1;
 }
