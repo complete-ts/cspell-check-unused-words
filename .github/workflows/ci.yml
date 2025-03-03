@@ -26,6 +26,8 @@ jobs:
       - uses: ./.github/workflows/setup
       - run: npm run test
 
+  # @template-customization-end
+
   discord:
     name: Discord Failure Notification
     needs: [build, lint]
@@ -37,5 +39,3 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: failure
           title: ""
-
-  # @template-customization-end

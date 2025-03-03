@@ -48,7 +48,7 @@ export async function formatWithPrettier(
  *                          file. If undefined is passed, the current working directory will be
  *                          used.
  */
-export async function getFilePath(
+async function getFilePath(
   fileName: string,
   filePathOrDirPath: string | undefined,
 ): Promise<string> {
