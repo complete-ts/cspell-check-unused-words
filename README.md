@@ -59,6 +59,6 @@ Enables more verbose logging, which is useful to see what the tool is doing at a
 ### --workingDir
 
 - Type: `string`
-- Default: `false`
+- Default: `process.cwd()`
 
 By default, this tool will use the current working directory as a jumpoff point to look for the CSpell configuration and launch the CSpell lint run. You can use this option to specify the full path to a different directory as the jumpoff point.
