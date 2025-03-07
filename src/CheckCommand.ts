@@ -125,7 +125,7 @@ export class CheckCommand extends Command {
     );
 
     if (this.verbose) {
-      console.log("CSpell found the following misspelled words:");
+      console.log("CSpell found the following misspelled words:\n");
       console.log(misspelledWords.join("\n"));
       console.log();
     }
@@ -150,10 +150,10 @@ export class CheckCommand extends Command {
 
     if (this.verbose) {
       console.log(
-        `Using a misspelled words set of ${misspelledWordsSet.size} entries:`,
+        `Using a misspelled words set of ${misspelledWordsSet.size} entries:\n`,
       );
       for (const word of misspelledWordsSet) {
-        console.log(`- ${word}`);
+        console.log(word);
       }
       console.log();
     }
