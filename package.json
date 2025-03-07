@@ -39,9 +39,9 @@
     "prettier": "3.5.3"
   },
   "devDependencies": {
-    "complete-cli": "1.0.29",
-    "complete-lint": "1.14.5",
-    "complete-node": "5.0.0",
+    "complete-cli": "1.0.31",
+    "complete-lint": "1.16.1",
+    "complete-node": "5.1.1",
     "execa": "9.5.2",
     "typescript": "5.7.3"
   }
