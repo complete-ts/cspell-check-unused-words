@@ -26,7 +26,7 @@ export function fatalError(...args: readonly unknown[]): never {
  */
 export async function formatWithPrettier(
   text: string,
-  language: "json" | "markdown" | "typescript",
+  language: string,
   repoRoot: string,
 ): Promise<string> {
   const prettierConfig = await resolveConfig(repoRoot);

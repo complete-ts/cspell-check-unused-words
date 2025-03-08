@@ -293,10 +293,11 @@ async function overwriteConfig(
   unusedWords: readonly string[],
   simple: boolean,
 ) {
+  const { ext: fileExtension } = path.parse(configPath);
   const repoRoot = path.dirname(configPath);
   const formattedText = await formatWithPrettier(
     newConfigText,
-    "json",
+    fileExtension,
     repoRoot,
   );
   await writeFileAsync(configPath, formattedText);
