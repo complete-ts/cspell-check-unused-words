@@ -4,7 +4,7 @@ import { lint } from "cspell";
 import { getDefaultConfigLoader } from "cspell-lib";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { assertDefined, trimSuffix } from "./completeCommon.js";
+import { assertDefined, trimPrefix, trimSuffix } from "./completeCommon.js";
 import {
   fatalError,
   formatWithPrettier,
@@ -293,11 +293,12 @@ async function overwriteConfig(
   unusedWords: readonly string[],
   simple: boolean,
 ) {
-  const { ext: fileExtension } = path.parse(configPath);
+  const { ext } = path.parse(configPath);
+  const language = trimPrefix(ext, ".");
   const repoRoot = path.dirname(configPath);
   const formattedText = await formatWithPrettier(
     newConfigText,
-    fileExtension,
+    language,
     repoRoot,
   );
   await writeFileAsync(configPath, formattedText);

@@ -42,6 +42,31 @@ export function isObject(
   );
 }
 
+/**
+ * Helper function to trim a prefix from a string, if it exists. Returns the trimmed string.
+ *
+ * @param string The string to trim.
+ * @param prefix The prefix to trim.
+ * @param trimAll Whether to remove multiple instances of the prefix, if they exist. If this is set
+ *                to true, the prefix must only be a single character.
+ */
+export function trimPrefix(
+  string: string,
+  prefix: string,
+  trimAll = false,
+): string {
+  if (trimAll) {
+    const regExp = new RegExp(`^${prefix}+`, "g");
+    return string.replaceAll(regExp, "");
+  }
+
+  if (!string.startsWith(prefix)) {
+    return string;
+  }
+
+  return string.slice(prefix.length);
+}
+
 /** Helper function to trim a suffix from a string, if it exists. Returns the trimmed string. */
 export function trimSuffix(string: string, prefix: string): string {
   if (!string.endsWith(prefix)) {
