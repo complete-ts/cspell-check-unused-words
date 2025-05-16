@@ -4,16 +4,15 @@ import {
   readFileAsync,
   testScript,
 } from "complete-node";
-import { ExecaError } from "execa";
+import type { ExecaError } from "execa";
 import path from "node:path";
 
 await testScript(async (projectRoot) => {
   const testsPath = path.join(projectRoot, "tests");
-  await Promise.all([
-    runTestCheck(testsPath),
-    runTestFixSingleLine(testsPath),
-    runTestFixMultiLine(testsPath),
-  ]);
+
+  await runTestCheck(testsPath);
+  await runTestFixSingleLine(testsPath);
+  await runTestFixMultiLine(testsPath);
 });
 
 async function runTestCheck(testsPath: string) {
@@ -21,16 +20,15 @@ async function runTestCheck(testsPath: string) {
   const $$ = $q({ cwd: testPath });
   try {
     await $$`tsx ../../src/main.ts --simple`;
-  } catch (error) {
-    if (!(error instanceof ExecaError)) {
-      throw new TypeError("Failed to parse the error from the test.");
-    }
+  } catch (error_) {
+    // For some reason, `error instanceof ExecaError` is false here.
+    const error = error_ as ExecaError;
+    const { stdout } = error;
 
-    if (typeof error.stdout !== "string") {
+    if (typeof stdout !== "string") {
       throw new TypeError("Failed to parse the stdout from the error.");
     }
 
-    const stdout = error.stdout as string;
     const numLines = stdout.split("\n").length;
 
     if (numLines !== 1) {
