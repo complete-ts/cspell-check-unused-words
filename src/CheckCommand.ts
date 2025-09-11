@@ -8,8 +8,8 @@ import { assertDefined, trimPrefix, trimSuffix } from "./completeCommon.js";
 import {
   fatalError,
   formatWithPrettier,
-  readFileAsync,
-  writeFileAsync,
+  readFile,
+  writeFile,
 } from "./completeNode.js";
 
 export class CheckCommand extends Command {
@@ -203,7 +203,7 @@ async function autoFix(
   unusedWords: readonly string[],
   simple: boolean,
 ) {
-  const configText = await readFileAsync(configPath);
+  const configText = await readFile(configPath);
   if (configText.includes("\r\n")) {
     fatalError(
       `Your CSpell configuration file at "${configPath}" contains Windows-style newlines, which is not supported.`,
@@ -301,7 +301,7 @@ async function overwriteConfig(
     language,
     repoRoot,
   );
-  await writeFileAsync(configPath, formattedText);
+  await writeFile(configPath, formattedText);
 
   if (!simple) {
     console.log(

@@ -6,7 +6,7 @@ import { PROJECT_NAME, PROJECT_VERSION } from "./constants.js";
 
 await main();
 
-async function main(): Promise<void> {
+async function main() {
   const [_node, _app, ...args] = process.argv;
 
   const cli = new Cli({

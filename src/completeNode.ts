@@ -1,12 +1,10 @@
 // These functions are from "complete-node". See the comment in the "completeCommon.ts" file.
 
-import fsPromises from "node:fs/promises";
+import fs from "node:fs/promises";
 import path from "node:path";
 import { format, resolveConfig } from "prettier";
 import type { ReadonlyRecord } from "./completeCommon.js";
-import { assertDefined, isObject } from "./completeCommon.js";
-
-const PACKAGE_JSON = "package.json";
+import { assertDefined, assertString, isObject } from "./completeCommon.js";
 
 /**
  * Helper function to print out an error message and then exit the program.
@@ -41,30 +39,27 @@ export async function formatWithPrettier(
  * Helper function to synchronously get the path to file, given either a file path, a directory
  * path, or `undefined`.
  *
- * This will throw an error if the file cannot be found.
- *
  * @param fileName The name of the file to find.
  * @param filePathOrDirPath Either the path to a file or the path to a directory which contains the
  *                          file. If undefined is passed, the current working directory will be
  *                          used.
+ * @throws If the file cannot be found.
  */
 async function getFilePath(
   fileName: string,
   filePathOrDirPath: string | undefined,
 ): Promise<string> {
-  if (filePathOrDirPath === undefined) {
-    filePathOrDirPath = process.cwd(); // eslint-disable-line no-param-reassign
-  }
+  filePathOrDirPath ??= process.cwd(); // eslint-disable-line no-param-reassign
 
-  const file = await isFileAsync(filePathOrDirPath);
+  const file = await isFile(filePathOrDirPath);
   if (file) {
     return filePathOrDirPath;
   }
 
-  const directory = await isDirectoryAsync(filePathOrDirPath);
+  const directory = await isDirectory(filePathOrDirPath);
   if (directory) {
     const filePath = path.join(filePathOrDirPath, fileName);
-    const fileInDirectory = await isFileAsync(filePath);
+    const fileInDirectory = await isFile(filePath);
     if (fileInDirectory) {
       return filePath;
     }
@@ -90,12 +85,12 @@ async function getFilePath(
 async function getPackageJSON(
   filePathOrDirPath: string | undefined,
 ): Promise<Record<string, unknown>> {
-  const filePath = await getFilePath(PACKAGE_JSON, filePathOrDirPath);
-  const packageJSONContents = await readFileAsync(filePath);
+  const filePath = await getFilePath("package.json", filePathOrDirPath);
+  const packageJSONContents = await readFile(filePath);
   const packageJSON = JSON.parse(packageJSONContents) as unknown;
   if (!isObject(packageJSON)) {
     throw new Error(
-      `Failed to parse a "${PACKAGE_JSON}" file at the following path: ${filePath}`,
+      `Failed to parse a "package.json" file at the following path: ${filePath}`,
     );
   }
 
@@ -104,14 +99,14 @@ async function getPackageJSON(
 
 /**
  * Helper function to asynchronously get an arbitrary string field from a "package.json" file. If
- * the field does not exist, `undefined` will be returned. This will throw an error if the
- * "package.json" file cannot be found or the field is not a string.
+ * the field does not exist, `undefined` will be returned.
  *
  * @param filePathOrDirPathOrRecord Either the path to a "package.json" file, the path to a
  *                                 directory which contains a "package.json" file, or a parsed
  *                                 JavaScript object from a JSON file. If undefined is passed, the
  *                                 current working directory will be used.
  * @param fieldName The name of the field to retrieve.
+ * @throws If the "package.json" file cannot be found or the field is not a string.
  */
 async function getPackageJSONField(
   filePathOrDirPathOrRecord:
@@ -132,18 +127,12 @@ async function getPackageJSONField(
 
   // Assume that all fields are strings. For objects (like e.g. "dependencies"), other helper
   // functions should be used.
-  if (typeof field !== "string") {
-    if (typeof filePathOrDirPathOrRecord === "string") {
-      // eslint-disable-next-line unicorn/prefer-type-error
-      throw new Error(
-        `Failed to parse the "${fieldName}" field in a "${PACKAGE_JSON}" file from: ${filePathOrDirPathOrRecord}`,
-      );
-    }
-
-    throw new Error(
-      `Failed to parse the "${fieldName}" field in a "${PACKAGE_JSON}" file.`,
-    );
-  }
+  assertString(
+    field,
+    typeof filePathOrDirPathOrRecord === "string"
+      ? `Failed to parse the "${fieldName}" field as a string in a "package.json" file: ${filePathOrDirPathOrRecord}`
+      : `Failed to parse the "${fieldName}" field as a string in a "package.json" file.`,
+  );
 
   return field;
 }
@@ -173,7 +162,7 @@ export async function getPackageJSONFieldsMandatory<T extends string>(
     const field = await getPackageJSONField(packageJSON, fieldName);
     assertDefined(
       field,
-      `Failed to find the "${fieldName}" field in a "${PACKAGE_JSON}" file.`,
+      `Failed to find the "${fieldName}" field in a "package.json" file: ${filePathOrDirPath}`,
     );
 
     fields[fieldName] = field;
@@ -183,9 +172,9 @@ export async function getPackageJSONFieldsMandatory<T extends string>(
 }
 
 /** Helper function to asynchronously check if the provided path exists and is a directory. */
-async function isDirectoryAsync(filePath: string): Promise<boolean> {
+async function isDirectory(filePath: string): Promise<boolean> {
   try {
-    const stats = await fsPromises.stat(filePath);
+    const stats = await fs.stat(filePath);
     return stats.isDirectory();
   } catch {
     return false;
@@ -193,9 +182,9 @@ async function isDirectoryAsync(filePath: string): Promise<boolean> {
 }
 
 /** Helper function to asynchronously check if the provided path exists and is a file. */
-async function isFileAsync(filePath: string): Promise<boolean> {
+async function isFile(filePath: string): Promise<boolean> {
   try {
-    const stats = await fsPromises.stat(filePath);
+    const stats = await fs.stat(filePath);
     return stats.isFile();
   } catch {
     return false;
@@ -206,33 +195,28 @@ async function isFileAsync(filePath: string): Promise<boolean> {
  * Helper function to asynchronously read a file.
  *
  * This assumes that the file is a text file and uses an encoding of "utf8".
- *
- * This will throw an error if the file cannot be read.
  */
-export async function readFileAsync(filePath: string): Promise<string> {
-  let fileContents: string;
-
+export async function readFile(filePath: string): Promise<string> {
   try {
-    fileContents = await fsPromises.readFile(filePath, "utf8");
+    return await fs.readFile(filePath, "utf8");
   } catch (error) {
-    throw new Error(`Failed to read text file "${filePath}": ${error}`);
+    throw new Error(`Failed to read file: ${filePath}`, {
+      cause: error,
+    });
   }
-
-  return fileContents;
 }
 
 /**
  * Helper function to asynchronously write data to a file.
  *
- * This will throw an error if the file cannot be written to.
+ * @throws If the file cannot be written to.
  */
-export async function writeFileAsync(
-  filePath: string,
-  data: string,
-): Promise<void> {
+export async function writeFile(filePath: string, data: string): Promise<void> {
   try {
-    await fsPromises.writeFile(filePath, data);
+    await fs.writeFile(filePath, data);
   } catch (error) {
-    throw new Error(`Failed to write to the "${filePath}" file: ${error}`);
+    throw new Error(`Failed to write to the file: ${filePath}`, {
+      cause: error,
+    });
   }
 }

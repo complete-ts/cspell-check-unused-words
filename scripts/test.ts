@@ -1,13 +1,10 @@
-import {
-  $q,
-  copyFileOrDirectoryAsync,
-  readFileAsync,
-  testScript,
-} from "complete-node";
+/* eslint-disable preserve-caught-error */
+
+import { $q, copyFileOrDirectory, readFile, testScript } from "complete-node";
 import type { ExecaError } from "execa";
 import path from "node:path";
 
-await testScript(async (projectRoot) => {
+await testScript(import.meta.dirname, async (projectRoot) => {
   const testsPath = path.join(projectRoot, "tests");
 
   await runTestCheck(testsPath);
@@ -70,11 +67,11 @@ async function runTestFixSingleLine(testsPath: string) {
     gotError = true;
   }
 
-  const newConfig = await readFileAsync(configPath);
-  const correctConfig = await readFileAsync(correctConfigPath);
+  const newConfig = await readFile(configPath);
+  const correctConfig = await readFile(correctConfigPath);
 
   // Restore the configuration file.
-  await copyFileOrDirectoryAsync(originalConfigPath, configPath);
+  await copyFileOrDirectory(originalConfigPath, configPath);
 
   if (newConfig !== correctConfig) {
     console.log("Configs were not identical.");
@@ -116,11 +113,11 @@ async function runTestFixMultiLine(testsPath: string) {
     gotError = true;
   }
 
-  const newConfig = await readFileAsync(configPath);
-  const correctConfig = await readFileAsync(correctConfigPath);
+  const newConfig = await readFile(configPath);
+  const correctConfig = await readFile(correctConfigPath);
 
   // Restore the configuration file.
-  await copyFileOrDirectoryAsync(originalConfigPath, configPath);
+  await copyFileOrDirectory(originalConfigPath, configPath);
 
   if (newConfig !== correctConfig) {
     console.log("Configs were not identical.");
