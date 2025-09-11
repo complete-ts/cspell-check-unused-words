@@ -4,7 +4,12 @@ import { lint } from "cspell";
 import { getDefaultConfigLoader } from "cspell-lib";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { assertDefined, trimPrefix, trimSuffix } from "./completeCommon.js";
+import {
+  assertDefined,
+  assertString,
+  trimPrefix,
+  trimSuffix,
+} from "./completeCommon.js";
 import {
   fatalError,
   formatWithPrettier,
@@ -92,9 +97,25 @@ export class CheckCommand extends Command {
     // Clear the custom words from the configuration.
     cSpellConfig.words = undefined;
 
+    const { files } = cSpellConfig;
+    if (files === undefined || files.length === 0) {
+      fatalError(
+        'The "files" property in the CSpell configuration file is either missing or has 0 elements. It is considered best practice to always have this field defined. If you want to spell check your entire project, you should change your configuration file to use:\n"files": ["**"]',
+      );
+    }
+
+    for (const [i, file] of files.entries()) {
+      assertString(
+        file,
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        `Entry ${i} of the "cSpellConfig.files" array was not a string: ${file}`,
+      );
+    }
+    const fileGlobs = files as string[];
+
     const misspelledWords: string[] = [];
     await lint(
-      ["."],
+      fileGlobs,
       {
         config: {
           settings: cSpellConfig,
