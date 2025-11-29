@@ -3,20 +3,23 @@
 import { $q, copyFileOrDirectory, readFile, testScript } from "complete-node";
 import type { ExecaError } from "execa";
 import path from "node:path";
+import { PACKAGE_ROOT } from "../src/constants.js";
 
-await testScript(import.meta.dirname, async (projectRoot) => {
-  const testsPath = path.join(projectRoot, "tests");
+const TESTS_PATH = path.join(PACKAGE_ROOT, "tests");
+const MAIN_TS_PATH = path.join(PACKAGE_ROOT, "src", "main.ts");
 
-  await runTestCheck(testsPath);
-  await runTestFixSingleLine(testsPath);
-  await runTestFixMultiLine(testsPath);
+await testScript(import.meta.dirname, async () => {
+  await runTestCheck();
+  await runTestFixSingleLine();
+  await runTestFixMultiLine();
+  await runTestCaseSensitivity();
 });
 
-async function runTestCheck(testsPath: string) {
-  const testPath = path.join(testsPath, "check");
+async function runTestCheck() {
+  const testPath = path.join(TESTS_PATH, "check");
   const $$ = $q({ cwd: testPath });
   try {
-    await $$`tsx ../../src/main.ts --simple`;
+    await $$`tsx ${MAIN_TS_PATH} --simple`;
   } catch (error_) {
     // For some reason, `error instanceof ExecaError` is false here.
     const error = error_ as ExecaError;
@@ -46,14 +49,14 @@ async function runTestCheck(testsPath: string) {
   throw new Error("Failed to get an error while running the test.");
 }
 
-async function runTestFixSingleLine(testsPath: string) {
-  const testPath = path.join(testsPath, "fix-single-line");
+async function runTestFixSingleLine() {
+  const testPath = path.join(TESTS_PATH, "fix-single-line");
   const originalConfigPath = path.join(
-    testsPath,
+    TESTS_PATH,
     "cspell.config.single-line-pre-fix.json",
   );
   const correctConfigPath = path.join(
-    testsPath,
+    TESTS_PATH,
     "cspell.config.single-line-post-fix.json",
   );
   const configPath = path.join(testPath, "cspell.config.json");
@@ -61,7 +64,7 @@ async function runTestFixSingleLine(testsPath: string) {
 
   let gotError = false;
   try {
-    await $$`tsx ../../src/main.ts --fix`;
+    await $$`tsx ${MAIN_TS_PATH} --fix`;
   } catch {
     console.log("Exit code was not 0.");
     gotError = true;
@@ -92,14 +95,14 @@ async function runTestFixSingleLine(testsPath: string) {
   }
 }
 
-async function runTestFixMultiLine(testsPath: string) {
-  const testPath = path.join(testsPath, "fix-multi-line");
+async function runTestFixMultiLine() {
+  const testPath = path.join(TESTS_PATH, "fix-multi-line");
   const originalConfigPath = path.join(
-    testsPath,
+    TESTS_PATH,
     "cspell.config.multi-line-pre-fix.json",
   );
   const correctConfigPath = path.join(
-    testsPath,
+    TESTS_PATH,
     "cspell.config.multi-line-post-fix.json",
   );
   const configPath = path.join(testPath, "cspell.config.json");
@@ -107,7 +110,7 @@ async function runTestFixMultiLine(testsPath: string) {
 
   let gotError = false;
   try {
-    await $$`tsx ../../src/main.ts --fix`;
+    await $$`tsx ${MAIN_TS_PATH} --fix`;
   } catch {
     console.log("Exit code was not 0.");
     gotError = true;
@@ -136,4 +139,27 @@ async function runTestFixMultiLine(testsPath: string) {
     console.error("--------------------");
     process.exit(1);
   }
+}
+
+async function runTestCaseSensitivity() {
+  const testPath = path.join(TESTS_PATH, "case-sensitivity");
+  const $$ = $q({ cwd: testPath });
+  try {
+    await $$`tsx ${MAIN_TS_PATH} --simple`;
+  } catch (error_) {
+    // For some reason, `error instanceof ExecaError` is false here.
+    const error = error_ as ExecaError;
+    const { stdout } = error;
+
+    if (typeof stdout !== "string") {
+      throw new TypeError("Failed to parse the stdout from the error.");
+    }
+
+    // TODO: Add assertions for case-sensitive duplicate handling
+    console.log("Case sensitivity test output:", stdout);
+
+    return;
+  }
+
+  throw new Error("Failed to get an error while running the test.");
 }

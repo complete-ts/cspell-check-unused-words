@@ -288,7 +288,7 @@ async function autoFix(
   const newLines: string[] = [];
 
   const unusedWordsRegexes = unusedWords.map(
-    (word) => new RegExp(`^(\\s*["']${word}["']\\s*,?\\s*)$`, "i"),
+    (word) => new RegExp(String.raw`^(\s*["']${word}["']\s*,?\s*)$`, "i"),
   );
 
   let insideWordsArray = false;

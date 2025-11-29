@@ -1,9 +1,10 @@
 import path from "node:path";
 import { getPackageJSONFieldsMandatory } from "./completeNode.js";
 
-const packageRoot = path.join(import.meta.dirname, "..");
+export const PACKAGE_ROOT = path.resolve(import.meta.dirname, "..");
+
 const { name, version } = await getPackageJSONFieldsMandatory(
-  packageRoot,
+  PACKAGE_ROOT,
   "name",
   "version",
 );
