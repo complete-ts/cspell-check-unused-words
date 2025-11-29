@@ -94,6 +94,30 @@ export class CheckCommand extends Command {
     );
     const lowercaseWordsSet = new Set(lowercaseWordsArray);
 
+    // Check that each word in the configuration file is not duplicated. (e.g. "apple" and "APPLE")
+    const unusedWords: string[] = [];
+    const seenLowercaseWords = new Map<string, string>();
+    for (const word of cSpellConfig.words) {
+      const lowercase = word.toLowerCase();
+      const existingWord = seenLowercaseWords.get(lowercase);
+
+      if (existingWord === undefined) {
+        seenLowercaseWords.set(lowercase, word);
+      } else {
+        unusedWords.push(word);
+
+        if (this.simple) {
+          console.log(word);
+        } else {
+          console.log(
+            `The following word in the CSpell config is duplicated: ${chalk.green(
+              existingWord,
+            )} / ${chalk.green(word)}`,
+          );
+        }
+      }
+    }
+
     // Clear the custom words from the configuration.
     cSpellConfig.words = undefined;
 
@@ -180,8 +204,6 @@ export class CheckCommand extends Command {
     }
 
     // Check that each ignored word in the configuration file is actually being used.
-    const unusedWords: string[] = [];
-
     for (const word of lowercaseWordsSet) {
       if (!misspelledWordsSet.has(word)) {
         unusedWords.push(word);
