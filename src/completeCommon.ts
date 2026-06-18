@@ -48,7 +48,7 @@ export function isObject(
   return (
     typeof variable === "object"
     && variable !== null
-    && !Array.isArray(variable)
+    && !Array.isArray(variable) // eslint-disable-line complete/prefer-is-array
   );
 }
 

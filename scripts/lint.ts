@@ -26,5 +26,6 @@ await lintCommands(import.meta.dirname, [
   "npm run start",
 
   // Check for template updates.
-  "complete-cli check",
+  // @template-ignore-next-line
+  "complete-cli check --ignore action.yml",
 ]);

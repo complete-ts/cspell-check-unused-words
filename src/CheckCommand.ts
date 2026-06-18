@@ -52,7 +52,7 @@ export class CheckCommand extends Command {
       );
     }
 
-    const { settings: cSpellConfig, url } = cspellConfigFile;
+    const { url, settings: cSpellConfig } = cspellConfigFile;
     const configPath = fileURLToPath(url.href);
 
     if (this.verbose) {
@@ -141,14 +141,14 @@ export class CheckCommand extends Command {
     await lint(
       fileGlobs,
       {
+        summary: true,
+        progress: false,
+        wordsOnly: true,
+        unique: true,
         config: {
           settings: cSpellConfig,
           url,
         },
-        progress: false,
-        summary: true,
-        unique: true,
-        wordsOnly: true,
       },
       {
         issue(issue) {
@@ -179,7 +179,9 @@ export class CheckCommand extends Command {
       word.toLowerCase(),
     );
     const misspelledLowercaseWordsSet = new Set(misspelledLowercaseWords);
-    const misspelledUniqueWords = [...misspelledLowercaseWordsSet.values()];
+    const misspelledUniqueWords = misspelledLowercaseWordsSet
+      .values()
+      .toArray();
 
     // Sort the words.
     // https://stackoverflow.com/questions/8996963/how-to-perform-case-insensitive-sorting-array-of-string-in-javascript
@@ -254,23 +256,29 @@ async function autoFix(
   }
 
   // First, check to see if the words are on a single line.
-  const singleLineArrayRegex = /(["']words["']\s*:\s*\[)(.*?)(])/;
-  const singleLineMatch = configText.match(singleLineArrayRegex);
+  const singleLineArrayRegex =
+    /(?<prefix>["']words["']\s*:\s*\[)(?<arrayContent>.*?)(?<suffix>\])/v;
+  const singleLineMatch = singleLineArrayRegex.exec(configText);
 
   if (singleLineMatch) {
-    const [fullMatch, prefix, arrayContent, suffix] = singleLineMatch;
+    const [fullMatch] = singleLineMatch;
+    const { groups } = singleLineMatch;
 
+    assertDefined(groups, "Failed to parse the single line words array.");
+    const { arrayContent, prefix, suffix } = groups;
     assertDefined(arrayContent, "Failed to parse the single line words array.");
+    assertDefined(prefix, "Failed to parse the single line words array.");
+    assertDefined(suffix, "Failed to parse the single line words array.");
 
     const wordsArray = arrayContent
       .split(",")
       .map((item) => item.trim())
       .filter((item) => {
         const normalizedItem = item
-          .replaceAll(/^["']|["']$/g, "")
+          .replaceAll(/^["']|["']$/gv, "")
           .toLowerCase();
-        return !unusedWords.some(
-          (word) => word.toLowerCase() === normalizedItem.toLowerCase(),
+        return unusedWords.every(
+          (word) => word.toLowerCase() !== normalizedItem.toLowerCase(),
         );
       });
 
@@ -297,7 +305,7 @@ async function autoFix(
   for (const line of lines) {
     const trimmedLine = line.trim();
 
-    if (/["']words["']\s*:\s*\[/.test(trimmedLine)) {
+    if (/["']words["']\s*:\s*\[/v.test(trimmedLine)) {
       insideWordsArray = true;
       bracketDepth = 1;
       newLines.push(line);
@@ -305,8 +313,8 @@ async function autoFix(
     }
 
     if (insideWordsArray) {
-      const openBrackets = (trimmedLine.match(/\[/g) ?? []).length;
-      const closeBrackets = (trimmedLine.match(/]/g) ?? []).length;
+      const openBrackets = (trimmedLine.match(/\[/gv) ?? []).length;
+      const closeBrackets = (trimmedLine.match(/\]/gv) ?? []).length;
       bracketDepth += openBrackets - closeBrackets;
 
       if (bracketDepth <= 0) {
