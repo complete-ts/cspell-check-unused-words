@@ -36,7 +36,7 @@
     "prettier": "3.8.4"
   },
   "devDependencies": {
-    "complete-cli": "1.5.26",
+    "complete-cli": "1.5.27",
     "complete-lint": "5.17.1",
     "complete-node": "17.0.0",
     "execa": "9.6.1",
